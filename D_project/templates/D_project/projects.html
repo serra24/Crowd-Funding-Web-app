@@ -1,0 +1,30 @@
+{%extends 'base.html'%}
+{% block content %}
+<div class="row d-flex">
+ 
+   
+  {% for project in projects %}
+  <div class="col-md-4 d-flex ftco-animate">
+    <div class="blog-entry align-self-stretch">
+      {% with first_image=project.image_set.first %}
+    <a href="#" class="block-20" style="background-image: url('{{ first_image.image.url }}');">{{first_image.id}}
+    </a>
+{% endwith %}
+
+   
+     
+      <div class="text p-4 d-block">
+        <div class="meta mb-3">
+          <div><a href="#">{{project.start}}</a></div>
+          <div><a href="#">{{project.category}}</a></div>
+          <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 2</a></div>
+        </div>
+        <h3 class="heading mt-3"><a href="#">{{project.name}}</a></h3>
+        <p>{{project.description}}</p>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+</div>
+{% endblock %}
