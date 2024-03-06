@@ -1,0 +1,307 @@
+{%extends 'base.html'%}
+{% block content %}
+
+<section class="ftco-section bg-light categorydetailfirstsec" style="background: #fff;">
+
+    <div class="container">
+
+    	<div class="row">
+       
+           <div class="col-md-8 textsec">
+                             <h3 style="padding: 20px 0px;
+    font-size: 30px;
+    font-weight: bold;">{{ project.name }}</h3>
+                  {% with first_image=project.image_set.first %}
+
+                <img src="{{ first_image.image.url }}" class=" img-fluid" style=" margin-bottom: 20px; width: 100%; border-radius: 20px;">
+                {% endwith %}
+
+                <div class="date-category" >
+                  <span>{{ project.start }}</span> 
+                  <span class="btn btn-success" style="float: right;padding: 5px 20px;">Animals</span>
+                </div>
+
+               <p>{{ project.description }}<p>
+                
+
+                
+          
+
+          <div class="row">
+
+            <div class="col-md-6">
+              <a href="https://gofundmeclone.phpliveprojects.com/fundraiser/funddonate/5" class="btn btn-warning" style="width:100%;padding: 10px;
+    font-weight: bold;">Donate</a>
+            </div>
+            <div class="col-md-6">
+
+             
+
+              <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#shareModal" style="width:100%;padding: 10px;
+    font-weight: bold;">Share</button>
+
+
+             <!-- Modal -->
+<div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h3 style="font-size:20px;font-weight: bold; padding: 10px 5px 5px;">Help by sharing</h3>
+        <h3 style="font-size:14px;padding: 5px 0px 20px;">Fundraisers shared on social networks raise up to 5x more.</h3>
+
+        <div class="socialmediasection">
+
+          <div class="row">
+
+            <div class="col-md-3">
+                 <a href="https://www.facebook.com/sharer.php?u=https://gofundmeclone.phpliveprojects.com//category/categorydetail/5" class="facebook" target="_blank"><i class="bx bxl-facebook"></i></a>
+            </div>
+
+             <div class="col-md-3">
+                 <a href="http://twitter.com/share?text=text&url=https://gofundmeclone.phpliveprojects.com//category/categorydetail/5&hashtags=#PHP" class="twitter" target="_blank"><i class="bx bxl-twitter"></i></a>
+            </div>
+
+             <div class="col-md-3">
+                 <a href="https://mail.google.com/mail/?view=cm&su=Animal Rescue farm&body=https://gofundmeclone.phpliveprojects.com//category/categorydetail/5" class="gmail" target="_blank"><i class="bx bxl-gmail" target="_blank"></i></a>
+            </div>
+
+             <div class="col-md-3">
+                 <a href="https://api.whatsapp.com/send?phone=&text= https://gofundmeclone.phpliveprojects.com//category/categorydetail/5" class="whatsapp" target="_blank"><i class="bx bxl-whatsapp"></i></a>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+            </div>
+          </div>
+
+
+          <div class="beneficiarydetail">
+
+            <h3 style=" padding: 10px 0px 20px;font-weight: bold;font-size: 22px;">Beneficiary :</h3>
+
+            <div class="row">
+
+              <div class="col-md-1">
+                    
+               <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="beneficiary_img">
+
+                     
+              </div>
+
+              <div class="col-md-11">
+
+                <h4></h4>
+
+                <p> , ,</p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="fundraiserdetail">
+
+            <h3 style="font-weight: bold; font-size: 27px;padding: 10px 0px;">Words of support ( 2 )</h3>
+
+            <p style="padding: 10px 0px;">Please donate to share words of support.</p>
+
+
+            
+             <div class="row donator">
+
+              <div class="col-md-1">
+               
+           
+               
+               <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="beneficiary_img">
+
+                     
+              </div>
+
+              <div class="col-md-11">
+
+                <h4 style="font-size: 19px;font-weight: bold;"> </h4>
+
+                <p><i class="bi bi-cash"></i> USD 10 &nbsp;&nbsp;&nbsp;&nbsp;  <i class="bi bi-calendar"></i>17/08/2023</p>
+
+                 <p> </p>
+
+              </div>
+
+            </div>
+
+             
+             <div class="row donator">
+
+              <div class="col-md-1">
+               
+           
+               
+               <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="beneficiary_img">
+
+                     
+              </div>
+
+              <div class="col-md-11">
+
+                <h4 style="font-size: 19px;font-weight: bold;"> </h4>
+
+                <p><i class="bi bi-cash"></i> USD 2 &nbsp;&nbsp;&nbsp;&nbsp;  <i class="bi bi-calendar"></i>17/08/2023</p>
+
+                 <p>welcome to sdf sdf </p>
+
+              </div>
+
+            </div>
+
+             
+            
+
+            
+            
+
+
+          </div>
+
+
+
+               
+           </div>
+
+           <div class="col-md-4">
+
+            <div class="right-sharesection"  style="position: fixed;box-shadow: 0px -2px 7px #605d5d;padding: 30px;background: #fff; z-index: 1;">
+
+               <progress id="file" value="12" max="1000" style="width: 100%;"> </progress>
+
+            <p> <span style="font-weight: bold;font-size:20px">USD 12 </span> raised of &nbsp; USD 1000 goal </p>
+
+             <p> 2 Donations</p>
+
+
+              <a href="https://gofundmeclone.phpliveprojects.com/fundraiser/funddonate/5" class="btn btn-warning" style="width:100%;margin-bottom:10px;padding: 10px;font-weight: bold;">Donate</a>
+            
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#shareModal" style="width:100%;margin-bottom:10px;padding: 10px;font-weight: bold;">Share</button>
+
+             
+              <div style="padding:10px;border-bottom:1px solid #eee">
+
+
+
+               <div class="row">
+
+              <div class="col-md-2">
+
+                 
+               <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="rightdonor_img">
+
+                            
+           
+             
+              </div>
+
+              <div class="col-md-10">
+
+                <h4 style="font-size: 17px;font-weight: bold;"></h4>
+
+                <p><i class="bi bi-cash"></i> USD 2 <span style="font-weight: bold; text-decoration: underline;">Recent Donation</span> </p>
+
+             
+
+              </div>
+
+            </div>
+
+          </div>
+
+        
+
+        
+
+
+ <div style="padding:10px;border-bottom:1px solid #eee">
+
+
+
+               <div class="row">
+
+              <div class="col-md-2">
+
+                 
+               <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="rightdonor_img">
+
+                            
+           
+             
+              </div>
+
+              <div class="col-md-10">
+
+                <h4 style="font-size: 17px;font-weight: bold;"></h4>
+
+                <p><i class="bi bi-cash"></i> USD 10 <span style="font-weight: bold; text-decoration: underline;">Top Donation</span> </p>
+
+             
+
+              </div>
+
+            </div>
+
+          </div>
+             
+
+
+          <div style="padding:10px;border-bottom:1px solid #eee">
+
+               <div class="row">
+
+             <div class="col-md-2">
+
+                 
+               <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="rightdonor_img">
+
+                            
+           
+             
+              </div>
+
+              <div class="col-md-10">
+
+                 <h4 style="font-size: 17px;font-weight: bold;"></h4>
+
+                <p><i class="bi bi-cash"></i> USD 10 <span style="font-weight: bold; text-decoration: underline;">First Donation</span> </p>
+
+             
+
+              </div>
+
+            </div>
+
+          </div>
+
+        
+
+           
+           </div>
+
+           </div>
+			
+			
+
+		</div>
+
+	</div>
+
+</section>
+{% endblock %}

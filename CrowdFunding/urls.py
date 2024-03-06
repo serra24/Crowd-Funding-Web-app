@@ -19,9 +19,13 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 from .settings import *
-
+from  D_project.views import home
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', home,name='home'),
+
     path('project/', include('D_project.urls')),
+    path('category/', include('category.urls')),
+
 
 ]+ static(MEDIA_URL,document_root=MEDIA_ROOT)

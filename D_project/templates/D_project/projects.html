@@ -1,6 +1,6 @@
 {%extends 'base.html'%}
 {% block content %}
-<div class="row d-flex">
+<!-- <div class="row d-flex">
  
    
   {% for project in projects %}
@@ -26,5 +26,291 @@
   </div>
   {% endfor %}
 
-</div>
+</div> -->
+
+<!-- category -->
+<!-- <section class="ftco-section bg-light categoryfundraisesec">
+
+  <div class="container">
+       <div class="section-title" data-aos="fade-right">
+
+
+            <h2>Fundraising categories</h2>
+
+          </div>
+
+      <div class="row">
+
+        {% for project in projects %}
+          <div class="col-md-4">
+      {% with first_image=project.image_set.first %}
+
+             <a href="https://gofundmeclone.phpliveprojects.com/category/viewcategory/1">
+                <div class="singlesection">
+
+               
+                  <img src="{{ first_image.image.url }}" class="singlesection-img img-fluid" alt="{{first_image.id}}">
+              
+                  {% endwith %}
+
+                  <h3>{{project.category}}</h3>
+
+                   
+                </div> 
+
+            </a>
+           
+
+                 </div>
+
+                 {% endfor %}    
+          
+                
+        
+
+      </div>
+
+  </div>
+
+</section>
+ -->
+
+
+
+
+
+
+
+<section class="ftco-section bg-light categoryfundraisesec">
+
+    <div class="container" data-aos="fade-right">
+      <div class="section-title" >
+
+              
+
+        <p>Happening near you</p>
+
+        <h2>Fundraisers in your community</h2>
+
+      </div>
+
+        <div class="row">
+
+            {% for project in projects %}
+                 
+            <div class="col-md-4">
+                <a href="{%url 'project_details' project.id%}">
+                  <div class="singlesection">
+
+                    {% with first_image=project.image_set.first %}
+                 
+                    <img src="{{ first_image.image.url }}" class="singlesection-img img-fluid" alt="{{first_image.id}}">
+                
+                    {% endwith %}
+
+                 <div class="row" style="padding:10px">
+
+                    <div class="col-md-6">
+                        <h3>{{project.name}}</h3>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h3 style="text-align: center;background: #009970;padding: 4px;color: #fff;border-radius: 10px;"> <span style="font-weight: bold;font-size:20px">Medical </span></h3>
+                    </div>
+                </div>
+                    <p>
+                    <p>{{project.description}}                      </p>
+
+                      <progress id="file" value="613" max="100" style="width: 100%;"> </progress>
+                     <h3> <span style="font-weight: bold;font-size:20px">USD 613 </span> raised of &nbsp; USD {{project.target}}</h3>
+                          
+                    
+                  </div> 
+              </a>
+
+                   </div>
+                   {% endfor %}
+
+                        
+            <!-- <div class="col-md-4">
+                <a href="https://gofundmeclone.phpliveprojects.com/category/categorydetail/2">
+                  <div class="singlesection">
+
+                 
+                    <img src="https://gofundmeclone.phpliveprojects.com/public/files/ads/1691055258_01ce6445a6475ffbb288.jpg" class="singlesection-img img-fluid" alt="">
+                
+
+                 <div class="row" style="padding;10px">
+
+                    <div class="col-md-6">
+<h3>Test 1</h3>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h3 style="text-align: center;background: #009970;padding: 4px;color: #fff;border-radius: 10px;"> <span style="font-weight: bold;font-size:20px">Medical </span></h3>
+                    </div>
+                </div>
+
+
+                    
+               
+                    <p>
+                    <p>sdfds <strong>sdfdsf </strong>sdfds</p>                      </p>
+
+                      <progress id="file" value="775" max="1000" style="width: 100%;"> </progress>
+                     <h3> <span style="font-weight: bold;font-size:20px">USD 775 </span> raised of &nbsp; USD 1000</h3>
+                          
+                    
+                  </div> 
+              </a>
+
+                   </div>
+
+                        
+            <div class="col-md-4">
+                <a href="https://gofundmeclone.phpliveprojects.com/category/categorydetail/4">
+                  <div class="singlesection">
+
+                 
+                    <img src="https://gofundmeclone.phpliveprojects.com/public/files/ads/1692043804_88ad145ad2ea9a7816eb.gif" class="singlesection-img img-fluid" alt="">
+                
+
+                 <div class="row" style="padding;10px">
+
+                    <div class="col-md-6">
+<h3>Please help</h3>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h3 style="text-align: center;background: #009970;padding: 4px;color: #fff;border-radius: 10px;"> <span style="font-weight: bold;font-size:20px">Emergency </span></h3>
+                    </div>
+                </div>
+
+
+                    
+               
+                    <p>
+                    <p>Please help to my friends family.</p>                      </p>
+
+                      <progress id="file" value="" max="30000" style="width: 100%;"> </progress>
+                     <h3> <span style="font-weight: bold;font-size:20px">USD  </span> raised of &nbsp; USD 30000</h3>
+                          
+                    
+                  </div> 
+              </a>
+
+                   </div>
+
+                        
+            <div class="col-md-4">
+                <a href="https://gofundmeclone.phpliveprojects.com/category/categorydetail/5">
+                  <div class="singlesection">
+
+                 
+                    <img src="https://gofundmeclone.phpliveprojects.com/public/files/ads/1692254762_428b706fb8413268e246.jpg" class="singlesection-img img-fluid" alt="">
+                
+
+                 <div class="row" style="padding;10px">
+
+                    <div class="col-md-6">
+<h3>Animal Rescue farm</h3>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h3 style="text-align: center;background: #009970;padding: 4px;color: #fff;border-radius: 10px;"> <span style="font-weight: bold;font-size:20px">Animals </span></h3>
+                    </div>
+                </div>
+
+
+                    
+               
+                    <p>
+                    <p>Lorum ipsum Lorum ipsum Lorum ipsumLorum ips...                      </p>
+
+                      <progress id="file" value="12" max="1000" style="width: 100%;"> </progress>
+                     <h3> <span style="font-weight: bold;font-size:20px">USD 12 </span> raised of &nbsp; USD 1000</h3>
+                          
+                    
+                  </div> 
+              </a>
+
+                   </div>
+
+                        
+            <div class="col-md-4">
+                <a href="https://gofundmeclone.phpliveprojects.com/category/categorydetail/6">
+                  <div class="singlesection">
+
+                 
+                    <img src="https://gofundmeclone.phpliveprojects.com/public/files/ads/1694232319_2c9a30f51c39e7cc748a.jpg" class="singlesection-img img-fluid" alt="">
+                
+
+                 <div class="row" style="padding;10px">
+
+                    <div class="col-md-6">
+<h3>Test fundraise</h3>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h3 style="text-align: center;background: #009970;padding: 4px;color: #fff;border-radius: 10px;"> <span style="font-weight: bold;font-size:20px">Emergency </span></h3>
+                    </div>
+                </div>
+
+
+                    
+               
+                    <p>
+                    <p>Test fundraiser text for education purpose.</p>                      </p>
+
+                      <progress id="file" value="" max="5000" style="width: 100%;"> </progress>
+                     <h3> <span style="font-weight: bold;font-size:20px">USD  </span> raised of &nbsp; USD 5000</h3>
+                          
+                    
+                  </div> 
+              </a>
+
+                   </div>
+
+                        
+            <div class="col-md-4">
+                <a href="https://gofundmeclone.phpliveprojects.com/category/categorydetail/7">
+                  <div class="singlesection">
+
+                 
+                    <img src="https://gofundmeclone.phpliveprojects.com/public/files/ads/1703405744_54947e29572b904ecd2c.jpeg" class="singlesection-img img-fluid" alt="">
+                
+
+                 <div class="row" style="padding;10px">
+
+                    <div class="col-md-6">
+<h3>Farmwise</h3>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h3 style="text-align: center;background: #009970;padding: 4px;color: #fff;border-radius: 10px;"> <span style="font-weight: bold;font-size:20px">Envirnoment </span></h3>
+                    </div>
+                </div>
+
+
+                    
+               
+                    <p>
+                    <p>This is just dummy for demo purposes, don't ...                      </p>
+
+                      <progress id="file" value="" max="93000000" style="width: 100%;"> </progress>
+                     <h3> <span style="font-weight: bold;font-size:20px">USD  </span> raised of &nbsp; USD 93000000</h3>
+                          
+                    
+                  </div> 
+              </a>
+
+                   </div> -->
+
+                 
+                  
+        </div>
+
+    </div>
+
+</section>
 {% endblock %}
