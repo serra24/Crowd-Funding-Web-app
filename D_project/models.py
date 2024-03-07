@@ -25,9 +25,18 @@ class Project(models.Model):
     end=models.DateTimeField()
     def __str__(self):
         return self.name
+    @classmethod
+    def GetLatestFiveProjects(self):
+        return self.objects.all()[:5]
+        # return self.objects.filter(name__in=(self.objects.all()[:5]))
 
 class Image(models.Model):
     project=models.ForeignKey(Project,on_delete=models.CASCADE)
     image = models.FileField(upload_to='projects/images',blank=True,null=True)
+    
+    @classmethod
+    def GetProjactImage(self,projact):
+        return f'/media/{self.objects.filter(project=projact).first().image}'
+        
     
     

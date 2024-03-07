@@ -11,8 +11,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
 # Create your views here.
-def home(req):
-    return render(req,'home.html')
 
 class projects(ListView):
     model=Project
