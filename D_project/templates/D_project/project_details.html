@@ -538,6 +538,11 @@
                     var commentCount = parseInt($('.fundraiserdetail h3').text().match(/\d+/)[0]); // Extract current comment count
                     commentCount++; // Increment comment count
                     $('.fundraiserdetail h3').text('Comments (' + commentCount + ')'); // Update comment count in the heading
+
+                    // Check if there are comments and update the "No comments yet" message accordingly
+                    if (commentCount > 0) {
+                        $('.no-comments-message').hide();
+                    }
                 },
                 error: function(xhr, errmsg, err) {
                     // Handle error
@@ -545,6 +550,12 @@
                 }
             });
         });
+
+        // Check if there are comments initially and hide the "No comments yet" message if there are comments
+        var initialCommentCount = parseInt($('.fundraiserdetail h3 .comment-count').text());
+        if (initialCommentCount > 0) {
+            $('.no-comments-message').hide();
+        }
     });
 </script>
 
