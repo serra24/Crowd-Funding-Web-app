@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from account.models import Profile
 from .models import *
@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.contrib.auth import logout
 
 # Create your views here.
 def home(req):
@@ -54,3 +55,4 @@ class delete_project(LoginRequiredMixin,DeleteView):
     model = Project
     template_name = 'D_project/delete.html'
     success_url = reverse_lazy('projects')
+

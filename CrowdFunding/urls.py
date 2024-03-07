@@ -20,12 +20,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 from .settings import *
 from  D_project.views import home
-from account.views import signup
+from account.views import signup,logout_view
 urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('account.urls'),name='account'),
     path('signup',signup , name='signup'),
+    path('logout',logout_view , name='logout'),
 
     path('', home,name='home'),
 
