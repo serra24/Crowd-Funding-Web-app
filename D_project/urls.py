@@ -6,7 +6,7 @@ urlpatterns = [
     path('',projects.as_view(),name='projects'),
     path('createProject',create_project,name="createProject"),
     path('deleteProject/<int:pk>/',delete_project.as_view(),name="deleteProject"),
-    path('project/<int:project_id>/add_comment/', add_comment, name='add_comment'),  # Make sure to add this line
-
+    path('donate/<int:project_id>/', donate, name='donate'),
+    path('project/<int:project_id>/add_comment/', add_comment, name='add_comment'), 
 
 ]
