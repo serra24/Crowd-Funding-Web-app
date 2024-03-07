@@ -178,26 +178,25 @@
                 <div class="col-md-11">
                     <h4>{{ comment.user.username }}</h4>
                     <p>{{ comment.text }}</p>
+                   
+                    {% if comment.comment %}
+                        <p>{{ comment.comment }}</p>
+                    {% endif %}
                 </div>
-
-
-               
-          <div class="row">
-
-            
+            </div>
         {% endfor %}
     {% else %}
         <p>No comments yet. Be the first one to comment!</p>
     {% endif %}
 
-   <!-- Comment Form -->
-<form id="comment-form" method="post" data-url="{% url 'add_comment' project.id %}">
-    {% csrf_token %}
-    <textarea id="comment-text" name="text" class="form-control" placeholder="Add your comment here" rows="4"></textarea>
-    <button type="button" id="submit-comment" class="btn btn-success m-2">Post Comment</button>
-</form>
-
+    <!-- Comment Form -->
+    <form id="comment-form" method="post" data-url="{% url 'add_comment' project.id %}">
+        {% csrf_token %}
+        <textarea id="comment-text" name="text" class="form-control" placeholder="Add your comment here" rows="4"></textarea>
+        <button type="button" id="submit-comment" class="btn btn-success m-2">Post Comment</button>
+    </form>
 </div>
+
 
 
 
@@ -519,7 +518,7 @@
                     commentHtml += '<img src="' + comment.user_profile_image + '" class="beneficiary_img" alt="' + comment.username + '"></div>';
                     commentHtml += '<div class="col-md-11"><h4>' + comment.username + '</h4>';
                     commentHtml += '<p>' + comment.text + '</p></div></div>';
-                    $('.fundraiserdetail').prepend(commentHtml);
+                    $('.fundraiserdetail h3').after(commentHtml); // Insert after the h3 element
                     $('#comment-text').val('');
                 },
                 error: function(xhr, errmsg, err) {
@@ -530,6 +529,7 @@
         });
     });
 </script>
+
 
 {% endblock %}
 
