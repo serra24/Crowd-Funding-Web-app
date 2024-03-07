@@ -1,9 +1,14 @@
 from django.shortcuts import render
+
+from account.models import Profile
 from .models import *
 from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
 from .forms import *
 from django.http import HttpResponseRedirect
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 
 # Create your views here.
 def home(req):
@@ -18,7 +23,11 @@ class project_details(DetailView):
     model=Project
     template_name=  'D_project/project_details.html'
     context_object_name=  'project'
+def profile(request):
+    user = Profile.objects.get(user=user.id)
+    return render(request, 'D_project/project_details.html',{'user':user})
 
+@login_required
 def create_project(request):
 
     if request.method == "POST":
@@ -39,3 +48,9 @@ def create_project(request):
         imageform = ImageForm()
 
     return render(request, "D_project/create_project.html", {"form": form, "imageform": imageform})    
+
+class delete_project(LoginRequiredMixin,DeleteView):
+    login_url = '/accounts/login/'
+    model = Project
+    template_name = 'D_project/delete.html'
+    success_url = reverse_lazy('projects')

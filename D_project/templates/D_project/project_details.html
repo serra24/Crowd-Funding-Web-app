@@ -18,17 +18,17 @@
 
                 <div class="date-category" >
                   <span>{{ project.start }}</span> 
-                  <span class="btn btn-success" style="float: right;padding: 5px 20px;">Animals</span>
+                  <span class="btn btn-success" style="float: right;padding: 5px 20px;">{{project.category}}</span>
                 </div>
 
                <p>{{ project.description }}<p>
           <div class="row">
 
-            <div class="col-md-6">
+            <div class="col">
               <a href="https://gofundmeclone.phpliveprojects.com/fundraiser/funddonate/5" class="btn btn-warning" style="width:100%;padding: 10px;
     font-weight: bold;">Donate</a>
             </div>
-            <div class="col-md-6">
+            <div class="col">
 
              
 
@@ -77,27 +77,35 @@
   </div>
 </div>
             </div>
+            {% if user.profile == project.user.profile %}
+            <div class="col">
+              <a href="{%url 'deleteProject' project.id %}" class="btn btn-danger" style="width:100%;padding: 10px;
+    font-weight: bold;">Delete</a>
+            </div>
+            {% endif %}
           </div>
 
 
           <div class="beneficiarydetail">
 
-            <h3 style=" padding: 10px 0px 20px;font-weight: bold;font-size: 22px;">Beneficiary :</h3>
+            <h3 style=" padding: 10px 0px 20px;font-weight: bold;font-size: 22px;">Created by: </h3>
 
             <div class="row">
 
               <div class="col-md-1">
-                    
+                {% if project.user.profile.image %}
+               <img src="{{project.user.profile.image.url}}" class="beneficiary_img" alt="{{project.user.username}}">
+                {% else %}
                <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="beneficiary_img">
 
-                     
+               {% endif %}    
               </div>
 
               <div class="col-md-11">
 
                 <h4></h4>
 
-                <p> , ,</p>
+                <p> {{ project.user.username }} </p>
 
               </div>
 

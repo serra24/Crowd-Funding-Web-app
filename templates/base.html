@@ -54,7 +54,7 @@
 
   <!-- ======= Header ======= -->
 
-  <header id="innerheader" class="fixed-top align-items-center" style="">
+  <header id="innerheader" class="fixed-top align-items-center" >
 
     <div class="container">
 
@@ -103,7 +103,22 @@
 
 			
             <li><a class="getstarted scrollto" href="https://gofundmeclone.phpliveprojects.com/user/login">Get Started</a></li>
+            {% if user.profile %}
+            <li><a class="nav-link scrollto" href="/account/profile/edit">Edit your profile ,{{ user.username }}</a></li>
+            <li>
+            {% if user.profile.image %}
+               <img src="{{user.profile.image.url}}" class="beneficiary_img" alt="{{project.user.username}}">
+                {% else %}
+               <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="beneficiary_img">
 
+               {% endif %}
+              </li>
+            <li><a class="nav-link scrollto" href="/accounts/logout">logout</a></li>
+
+            {% else %}
+            <li><a class="nav-link scrollto" href="/accounts/login">Login {{ user.username }}</a></li>
+            <li><a class="nav-link scrollto" href="/accounts/signup">Register</a></li>
+            {% endif %}
           
           </ul>
 
@@ -129,7 +144,7 @@ button.close.msgclose {
     float: right;
 }
   </style>
-
+<div style="margin-bottom: 200px;"></div>
 {% block content %}
 
 
