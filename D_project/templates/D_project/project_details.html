@@ -11,10 +11,10 @@
                              <h3 style="padding: 20px 0px;
     font-size: 30px;
     font-weight: bold;">{{ project.name }}</h3>
-                  {% with first_image=project.image_set.first %}
+                  {% for image in project.image_set.all %}
 
-                <img src="{{ first_image.image.url }}" class=" img-fluid" style=" margin-bottom: 20px; width: 100%; border-radius: 20px;">
-                {% endwith %}
+                <img src="{{ image.image.url }}" class=" img-fluid" style=" margin-bottom: 20px; width: 100%; border-radius: 20px;">
+                {% endfor %}
 
                 <div class="date-category" >
                   <span>{{ project.start }}</span> 
@@ -22,11 +22,6 @@
                 </div>
 
                <p>{{ project.description }}<p>
-                
-
-                
-          
-
           <div class="row">
 
             <div class="col-md-6">

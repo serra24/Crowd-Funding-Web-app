@@ -4,4 +4,4 @@ from .models import *
 admin.site.register(Project)
 admin.site.register(Category)
 admin.site.register(Image)
-admin.site.register(Tags)
+admin.site.register(Tag)
