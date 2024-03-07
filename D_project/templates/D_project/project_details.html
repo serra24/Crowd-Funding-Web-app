@@ -33,8 +33,7 @@
               <a href="{% url 'donate' project.id %}?image_url={{ first_image.image.url }}" class="btn btn-warning" style="width:100%;padding: 10px;font-weight: bold;"><b>ADD DONATION</b></a>
 
             </div>
-          </div>
-          <div class="col">
+             <div class="col">
             <button
               type="button"
               class="btn btn-outline-warning"
@@ -44,6 +43,9 @@
             >
               Share
             </button>
+            </div>
+          </div>
+         
 
             <!-- Modal -->
             <div
@@ -178,57 +180,26 @@
                 <div class="col-md-11">
                     <h4>{{ comment.user.username }}</h4>
                     <p>{{ comment.text }}</p>
+                   
+                    {% if comment.comment %}
+                        <p>{{ comment.comment }}</p>
+                    {% endif %}
                 </div>
-
-
-               <p>{{ project.description }}<p>
-          <div class="row">
-
-            
+            </div>
         {% endfor %}
     {% else %}
         <p>No comments yet. Be the first one to comment!</p>
     {% endif %}
 
-   <!-- Comment Form -->
-<form id="comment-form" method="post" data-url="{% url 'add_comment' project.id %}">
-    {% csrf_token %}
-    <textarea id="comment-text" name="text" class="form-control" placeholder="Add your comment here" rows="4"></textarea>
-    <button type="button" id="submit-comment" class="btn btn-success m-2">Post Comment</button>
-</form>
-
+    <!-- Comment Form -->
+    <form id="comment-form" method="post" data-url="{% url 'add_comment' project.id %}">
+        {% csrf_token %}
+        <textarea id="comment-text" name="text" class="form-control" placeholder="Add your comment here" rows="4"></textarea>
+        <button type="button" id="submit-comment" class="btn btn-success m-2">Post Comment</button>
+    </form>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#submit-comment').click(function() {
-            var form = $('#comment-form');
-            var url = form.attr('data-url');
-            var formData = form.serialize();
 
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: formData,
-                success: function(data) {
-                    // If comment submission is successful, add the new comment to the page
-                    var comment = data.comment;
-                    var commentHtml = '<div class="row comment"><div class="col-md-1">';
-                    commentHtml += '<img src="' + comment.user_profile_image + '" class="beneficiary_img" alt="' + comment.username + '"></div>';
-                    commentHtml += '<div class="col-md-11"><h4>' + comment.username + '</h4>';
-                    commentHtml += '<p>' + comment.text + '</p></div></div>';
-                    $('.fundraiserdetail').prepend(commentHtml);
-                    $('#comment-text').val('');
-                },
-                error: function(xhr, errmsg, err) {
-                    // Handle error
-                    console.log(xhr.status + ": " + xhr.responseText);
-                }
-            });
-        });
-    });
-</script>
 
 
 
@@ -238,6 +209,7 @@
       </div>
 
       <div class="col-md-4">
+
         <div
           class="right-sharesection"
           style="
@@ -381,11 +353,6 @@
             </div>
 
              
-            
-
-            
-            
-
 
           </div>
 
@@ -418,16 +385,23 @@
 
               <div class="col-md-2">
 
+  
                  
 
                             
            
              
+  
+  
               <div class="col-md-2">
                 <img
                   src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg"
                   class="rightdonor_img"
                 />
+  
+  
+
+  
               </div>
 
               <div class="col-md-10">
@@ -484,7 +458,10 @@
                   >
                 </p>
               </div>
+  
               
+  
+  
 
             </div>
           </div>
@@ -540,5 +517,36 @@
         });
     });
 </script>
+
+<script>
+    $(document).ready(function() {
+        $('#submit-comment').click(function() {
+            var form = $('#comment-form');
+            var url = form.attr('data-url');
+            var formData = form.serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                success: function(data) {
+                    var comment = data.comment;
+                    var commentHtml = '<div class="row comment"><div class="col-md-1">';
+                    commentHtml += '<img src="' + comment.user_profile_image + '" class="beneficiary_img" alt="' + comment.username + '"></div>';
+                    commentHtml += '<div class="col-md-11"><h4>' + comment.username + '</h4>';
+                    commentHtml += '<p>' + comment.text + '</p></div></div>';
+                    $('.fundraiserdetail h3').after(commentHtml); // Insert after the h3 element
+                    $('#comment-text').val('');
+                },
+                error: function(xhr, errmsg, err) {
+                    // Handle error
+                    console.log(xhr.status + ": " + xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+
+
 {% endblock %}
 
