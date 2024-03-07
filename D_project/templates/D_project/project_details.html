@@ -505,53 +505,49 @@
                         rating: rating
                     },
                     success: function(response) {
-                      console.log("Rating submitted successfully.");
-                      // Update the displayed latest rating
-                      $('#latest-rating').text("Latest Rating: " + rating);
-                  },
-                  error: function(xhr, status, error) {
-                      console.error("Error submitting rating:", error);
-                  }
+                        console.log("Rating submitted successfully.");
+                        // Update the displayed latest rating
+                        $('#latest-rating').text("Latest Rating: " + rating);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error submitting rating:", error);
+                    }
                 });
             }
         });
-    });
-</script>
 
-<script>
-  $(document).ready(function() {
-    $('#submit-comment').click(function() {
-        var form = $('#comment-form');
-        var url = form.attr('data-url');
-        var formData = form.serialize();
+        $('#submit-comment').click(function() {
+            var form = $('#comment-form');
+            var url = form.attr('data-url');
+            var formData = form.serialize();
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: formData,
-            success: function(data) {
-                var comment = data.comment;
-                var commentHtml = '<div class="row comment"><div class="col-md-1">';
-                commentHtml += '<img src="' + comment.user_profile_image + '" class="beneficiary_img" alt="' + comment.username + '"></div>';
-                commentHtml += '<div class="col-md-11"><h4>' + comment.username + '</h4>';
-                commentHtml += '<p>' + comment.text + '</p></div></div>';
-                $('.fundraiserdetail h3').after(commentHtml); // Insert after the h3 element
-                $('#comment-text').val('');
-                
-                // Update comment count
-                var commentCount = parseInt($('.fundraiserdetail h3').text().match(/\d+/)[0]); // Extract current comment count
-                commentCount++; // Increment comment count
-                $('.fundraiserdetail h3').text('Comments (' + commentCount + ')'); // Update comment count in the heading
-            },
-            error: function(xhr, errmsg, err) {
-                // Handle error
-                console.log(xhr.status + ": " + xhr.responseText);
-            }
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                success: function(data) {
+                    var comment = data.comment;
+                    var commentHtml = '<div class="row comment"><div class="col-md-1">';
+                    commentHtml += '<img src="' + comment.user_profile_image + '" class="beneficiary_img" alt="' + comment.username + '"></div>';
+                    commentHtml += '<div class="col-md-11"><h4>' + comment.username + '</h4>';
+                    commentHtml += '<p>' + comment.text + '</p></div></div>';
+                    $('.fundraiserdetail h3').after(commentHtml); // Insert after the h3 element
+                    $('#comment-text').val('');
+                    
+                    // Update comment count
+                    var commentCount = parseInt($('.fundraiserdetail h3').text().match(/\d+/)[0]); // Extract current comment count
+                    commentCount++; // Increment comment count
+                    $('.fundraiserdetail h3').text('Comments (' + commentCount + ')'); // Update comment count in the heading
+                },
+                error: function(xhr, errmsg, err) {
+                    // Handle error
+                    console.log(xhr.status + ": " + xhr.responseText);
+                }
+            });
         });
     });
-});
-
 </script>
+
 
 
 {% endblock %}
