@@ -54,3 +54,21 @@ class delete_project(LoginRequiredMixin,DeleteView):
     model = Project
     template_name = 'D_project/delete.html'
     success_url = reverse_lazy('projects')
+from django.http import JsonResponse
+
+def add_comment(request, project_id):
+    if request.method == 'POST':
+        text = request.POST.get('text')
+        project = Project.objects.get(id=project_id)
+        comment = Comment.objects.create(user=request.user, project=project, text=text)
+        # Return JSON response containing newly created comment data
+        return JsonResponse({
+            'comment': {
+                'username': comment.user.username,
+                'user_profile_image': comment.user.profile.image.url if comment.user.profile.image else 'https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg',
+                'text': comment.text,
+            }
+        })
+    return JsonResponse({'error': 'Invalid Request'}, status=400)
+
+
