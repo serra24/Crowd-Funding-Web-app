@@ -25,8 +25,8 @@
           <div class="row">
 
             <div class="col">
-              <a href="https://gofundmeclone.phpliveprojects.com/fundraiser/funddonate/5" class="btn btn-warning" style="width:100%;padding: 10px;
-    font-weight: bold;">Donate</a>
+              <a href="{% url 'donate' project.id %}?image_url={{ first_image.image.url }}" class="btn btn-warning" style="width:100%;padding: 10px;font-weight: bold;"><b>ADD DONATION</b></a>
+
             </div>
             <div class="col">
 
@@ -115,32 +115,44 @@
 
           <div class="fundraiserdetail">
 
-            <h3 style="font-weight: bold; font-size: 27px;padding: 10px 0px;">Words of support ( 2 )</h3>
-
-            <p style="padding: 10px 0px;">Please donate to share words of support.</p>
-
-
             
              <div class="row donator">
 
-              <div class="col-md-1">
-               
-           
-               
-               <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="beneficiary_img">
-
-                     
-              </div>
-
-              <div class="col-md-11">
-
-                <h4 style="font-size: 19px;font-weight: bold;"> </h4>
-
-                <p><i class="bi bi-cash"></i> USD 10 &nbsp;&nbsp;&nbsp;&nbsp;  <i class="bi bi-calendar"></i>17/08/2023</p>
-
-                 <p> </p>
-
-              </div>
+             
+              <div>
+                <h3 style="font-weight: bold; font-size: 27px; padding: 10px 0px;">Latest Rating: {{ latest_rating }}</h3>
+            
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#rateModel">
+                    Choose Rating 
+                </button>
+            
+                <div id="submittedRating"></div>
+            
+                <div class="modal fade" id="rateModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Rating Project</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <!-- This ngb-rating is an Angular directive, make sure Angular is included and configured -->
+                                <!-- This is the placeholder for ngb-rating, you may replace it with your Angular code -->
+                                <div id="rateYo1" style="margin: 10px auto"></div>
+                                <div class="counter" style="float: left; font-weight: bold; margin-left: 10px; margin-top: 7px;"></div>
+                                <div style="clear: both"></div>
+                            </div>
+                            <div class="btns d-flex justify-content-end p-4 mt-2">
+                                <button type="button" class="btn btn-warning mx-3" data-bs-dismiss="modal">Close</button>
+                                <!-- Assuming this button is for submitting the rating -->
+                                <button type="submit" class="btn btn-success" data-bs-dismiss="modal">Send Rate</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+  
 
             </div>
 
@@ -193,7 +205,7 @@
              <p> 2 Donations</p>
 
 
-              <a href="https://gofundmeclone.phpliveprojects.com/fundraiser/funddonate/5" class="btn btn-warning" style="width:100%;margin-bottom:10px;padding: 10px;font-weight: bold;">Donate</a>
+             <a href="{% url 'donate' project.id %}?image_url={{ first_image.image.url }}" class="btn btn-warning mb-3" style="width:100%;padding: 10px;font-weight: bold;"><b>ADD DONATION</b></a>
             
             <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#shareModal" style="width:100%;margin-bottom:10px;padding: 10px;font-weight: bold;">Share</button>
 
@@ -207,7 +219,6 @@
               <div class="col-md-2">
 
                  
-               <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="rightdonor_img">
 
                             
            
@@ -288,6 +299,7 @@
              
 
               </div>
+              
 
             </div>
 
@@ -307,4 +319,51 @@
 	</div>
 
 </section>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+<script>
+    $(function() {
+        var rating = 0;
+
+        // Initialize RateYo plugin with readOnly option set to false and starHover set to false
+        $("#rateYo1").rateYo({
+            rating: rating,
+            numStars: 5,
+            precision: 2,
+            starWidth: "64px",
+            spacing: "5px",
+            readOnly: false, // Enable interactivity
+            starHover: false, // Disable hover effect
+            multiColor: {
+                startColor: "#000000",
+                endColor: "#ffffff"
+            },
+            // Triggered when the rating is set
+            onSet: function(rating) {
+                // Update the display with the submitted rating
+                $("#submittedRating").text("Your rating is: " + rating);
+                
+                // Here you can add code to submit the rating to the server
+                // For example, you can use AJAX to send the rating data to the server
+                var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'project_details' pk=2 %}",
+                    data: {
+                        csrfmiddlewaretoken: csrfToken,  // Include CSRF token
+                        rating: rating
+                    },
+                    success: function(response) {
+                      console.log("Rating submitted successfully.");
+                      // Update the displayed latest rating
+                      $('#latest-rating').text("Latest Rating: " + rating);
+                  },
+                  error: function(xhr, status, error) {
+                      console.error("Error submitting rating:", error);
+                  }
+                });
+            }
+        });
+    });
+</script>
 {% endblock %}
