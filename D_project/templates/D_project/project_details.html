@@ -136,7 +136,32 @@
           {% endif %}
         </div>
 
-        <div class="beneficiarydetail"></div>
+        <div class="beneficiarydetail">
+
+            <h3 style=" padding: 10px 0px 20px;font-weight: bold;font-size: 22px;">Created by: </h3>
+
+            <div class="row">
+
+              <div class="col-md-1">
+                {% if project.user.profile.image %}
+               <img src="{{project.user.profile.image.url}}" class="beneficiary_img" alt="{{project.user.username}}">
+                {% else %}
+               <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="beneficiary_img">
+
+               {% endif %}    
+              </div>
+
+              <div class="col-md-11">
+
+                <h4></h4>
+
+                <p> {{ project.user.username }} </p>
+
+              </div>
+
+            </div>
+
+          </div>
 
        
           
