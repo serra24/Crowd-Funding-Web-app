@@ -57,7 +57,7 @@ class delete_project(LoginRequiredMixin,DeleteView):
     model = Project
     template_name = 'D_project/delete.html'
     success_url = reverse_lazy('projects')
-<<<<<<< HEAD
+
 
 def donate(request, project_id):
     project = Project.objects.get(id=project_id)
@@ -120,7 +120,7 @@ def calculate_average_rating(project):
         return round(average_rating, 2)
     else:
         return 0       
-=======
+
 from django.http import JsonResponse
 
 def add_comment(request, project_id):
@@ -139,4 +139,3 @@ def add_comment(request, project_id):
     return JsonResponse({'error': 'Invalid Request'}, status=400)
 
 
->>>>>>> main
