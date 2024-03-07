@@ -30,12 +30,9 @@
         <p></p>
         <div class="row">
           <div class="col">
-            <a
-              href="https://gofundmeclone.phpliveprojects.com/fundraiser/funddonate/5"
-              class="btn btn-warning"
-              style="width: 100%; padding: 10px; font-weight: bold"
-              >Donate</a
-            >
+              <a href="{% url 'donate' project.id %}?image_url={{ first_image.image.url }}" class="btn btn-warning" style="width:100%;padding: 10px;font-weight: bold;"><b>ADD DONATION</b></a>
+
+            </div>
           </div>
           <div class="col">
             <button
@@ -187,10 +184,7 @@
                <p>{{ project.description }}<p>
           <div class="row">
 
-            <div class="col">
-              <a href="{% url 'donate' project.id %}?image_url={{ first_image.image.url }}" class="btn btn-warning" style="width:100%;padding: 10px;font-weight: bold;"><b>ADD DONATION</b></a>
-
-            </div>
+            
         {% endfor %}
     {% else %}
         <p>No comments yet. Be the first one to comment!</p>
