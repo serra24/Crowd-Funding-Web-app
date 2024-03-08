@@ -24,6 +24,10 @@ class projects(ListView):
     template_name= 'D_project/projects.html'
     context_object_name = 'projects'
 
+def featured_projects(request):
+    featured_projects = Project.objects.filter(is_featured=True)
+    return render(request, 'home.html', {'featured_projects': featured_projects})
+
 # class project_details(DetailView):
 #     model=Project
 #     template_name=  'D_project/project_details.html'
@@ -94,12 +98,6 @@ def delete_project(request, project_id):
             # messages.success(request, "The project has been deleted successfully.")
         return render(request,'D_project/delete.html', {'msg':'','project':project,'donation':donation})
         
-        
-
-    
-    # return render(request,'D_project/delete.html')
- 
-  
 @login_required
 def donate(request, project_id):
     project = Project.objects.get(id=project_id)

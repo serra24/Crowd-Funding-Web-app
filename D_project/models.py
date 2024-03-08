@@ -26,6 +26,7 @@ class Project(models.Model):
     description=models.TextField(default="loream loream",max_length=800,null=True)
     start=models.DateTimeField(auto_now_add=True)
     end=models.DateTimeField()
+    is_featured = models.BooleanField(default=False)
     def __str__(self):
         return self.name
     @classmethod
@@ -53,8 +54,8 @@ class Image(models.Model):
     @classmethod
     def GetProjactImage(self,projact):
         return f'/media/{self.objects.filter(project=projact).first().image}'
-        
-    
+
+
 
 class Donation(models.Model):
     donation = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -90,3 +91,4 @@ class Reply(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     reply_text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)       
+
