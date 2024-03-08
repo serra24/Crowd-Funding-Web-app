@@ -124,31 +124,63 @@
 
           </div>
 
-       
-          
+
  <div class="fundraiserdetail">
     <h3 style="font-weight: bold; font-size: 27px;padding: 10px 0px;">Comments ({{ project.comments.count }})</h3>
     {% if project.comments.all %}
-        {% for comment in project.comments.all %}
-            <div class="row comment">
-                <div class="col-md-1">
-                    <!-- Display commenter's profile image here -->
-                    {% if comment.user.profile.image %}
-                        <img src="{{ comment.user.profile.image.url }}" class="beneficiary_img" alt="{{ comment.user.username }}">
-                    {% else %}
-                        <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="beneficiary_img">
-                    {% endif %}
-                </div>
-                <div class="col-md-11">
-                    <h4>{{ comment.user.username }}</h4>
-                    <p>{{ comment.text }}</p>
-                   
-                    {% if comment.comment %}
-                        <p>{{ comment.comment }}</p>
-                    {% endif %}
-                </div>
+{% for comment in project.comments.all %}
+    <div class="row comment">
+        <div class="col-md-1">
+            <!-- Display commenter's profile image here -->
+            {% if comment.user.profile.image %}
+                <img src="{{ comment.user.profile.image}}" class="beneficiary_img" alt="{{ comment.user.username }}">
+            {% else %}
+                <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="beneficiary_img">
+            {% endif %}
+        </div>
+        <div class="col-md-11">
+            <h4>{{ comment.user.username }}</h4>
+            <p>{{ comment.text }}</p>
+            <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample{{ forloop.counter }}add_replies" aria-expanded="false" aria-controls="collapseExample{{ forloop.counter }}add_replies">
+                Reply
+            </button>
+           <!-- Inside the comment loop -->
+<div class="collapse" id="collapseExample{{ forloop.counter }}add_replies">
+    <form class="d-flex flex-column align-items-end add-reply-form" data-url="{% url 'add_reply' comment.id %}">
+        {% csrf_token %}
+        <textarea name="reply_text" rows="2" class="col-md-12 form-control"></textarea>
+        <button type="submit" class="btn bg-gradient-light w-20 mt-2">Reply</button>
+    </form>
+</div>
+
+            <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample{{ forloop.counter }}show_replies" aria-expanded="false" aria-controls="collapseExample{{ forloop.counter }}show_replies">
+                Show Replies
+            </button>
+            <!-- Display replies for each comment -->
+            <div class="collapse" id="collapseExample{{ forloop.counter }}show_replies">
+                <hr class="my-0" />
+                <ul class="list-unstyled mt-1">
+                    {% for reply in comment.replies.all %}
+                        <li class=" mt-1">
+                            <div class="comment d-flex">
+                                <div class="col-md-1">
+                                    <img class="rounded-circle img-thumbnail" src="{{ reply.user.profile_img.url }}"  style="width: 40px;height:40px;" />
+                                </div>
+                                <div class="col-md-8 mx-3">
+                                    <h6 class="comment-header mb-0">{{ reply.user|title }}</h6>
+                                    <p class="comment-time"><small><small>{{ reply.created_at }}</small></small></p>
+                                    <p class="comment-content">{{ reply.reply_text }}</p>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
-        {% endfor %}
+           
+        </div>
+    </div>
+{% endfor %}
+
     {% else %}
         <p>No comments yet. Be the first one to comment!</p>
     {% endif %}
@@ -165,10 +197,17 @@
 
 
 
+
             
          
     </div>    
       
+
+            </div>
+          </div>
+        </div>
+      </div>
+
 
       <div class="col-md-4" >
 
@@ -251,11 +290,50 @@
             
            </div>
 
+
          </div>
 
        </div>
        {% endfor %}  
           <!-- <div style="padding:10px;border-bottom:1px solid #eee">
+
+             
+              <div>
+                <h3 style="font-weight: bold; font-size: 27px; padding: 10px 0px;">Latest Rating: {{ latest_rating }}</h3>
+            
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#rateModel">
+                    Choose Rating 
+                </button>
+            
+                <div id="submittedRating"></div>
+            
+                <div class="modal fade" id="rateModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Rating Project</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <!-- This ngb-rating is an Angular directive, make sure Angular is included and configured -->
+                                <!-- This is the placeholder for ngb-rating, you may replace it with your Angular code -->
+                                <div id="rateYo1" style="margin: 10px auto"></div>
+                                <div class="counter" style="float: left; font-weight: bold; margin-left: 10px; margin-top: 7px;"></div>
+                                <div style="clear: both"></div>
+                            </div>
+                            <div class="btns d-flex justify-content-end p-4 mt-2">
+                                <button type="button" class="btn btn-warning mx-3" data-bs-dismiss="modal">Close</button>
+                                <!-- Assuming this button is for submitting the rating -->
+                                <button type="submit" class="btn btn-success" data-bs-dismiss="modal">Send Rate</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+ 
+            </div>
+
 
 
 
@@ -278,6 +356,7 @@
              <p><i class="bi bi-cash"></i> USD 10 <span style="font-weight: bold; text-decoration: underline;">Top Donation</span> </p>
 
           
+
 
            </div>
 
@@ -318,6 +397,10 @@
 
 
                
+
+          </div>
+     
+
            </div>
 
        
@@ -358,6 +441,7 @@
           Fundraisers shared on social networks raise up to 5x more.
         </h3>
 
+
         <div class="socialmediasection">
           <div class="row">
             <div class="col-md-3">
@@ -367,6 +451,44 @@
                 target="_blank"
                 ><i class="bx bxl-facebook"></i
               ></a>
+
+            <p> <span style="font-weight: bold;font-size:20px">USD 12 </span> raised of &nbsp; USD 1000 goal </p>
+
+             <p> 2 Donations</p>
+
+
+             <a href="{% url 'donate' project.id %}?image_url={{ first_image.image.url }}" class="btn btn-warning mb-3" style="width:100%;padding: 10px;font-weight: bold;"><b>ADD DONATION</b></a>
+            
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#shareModal" style="width:100%;margin-bottom:10px;padding: 10px;font-weight: bold;">Share</button>
+
+             
+              <div style="padding:10px;border-bottom:1px solid #eee">
+
+
+
+               <div class="row">
+
+              <div class="col-md-2">
+
+              <div class="col-md-2">
+                <img
+                  src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg"
+                  class="rightdonor_img"
+                />
+  
+              </div>
+
+              <div class="col-md-10">
+                <h4 style="font-size: 17px; font-weight: bold"></h4>
+
+                <p>
+                  <i class="bi bi-cash"></i> USD 2
+                  <span style="font-weight: bold; text-decoration: underline"
+                    >Recent Donation</span
+                  >
+                </p>
+              </div>
+
             </div>
 
             <div class="col-md-3">
@@ -377,6 +499,7 @@
                 ><i class="bx bxl-twitter"></i
               ></a>
             </div>
+
 
             <div class="col-md-3">
               <a
@@ -394,6 +517,27 @@
                 target="_blank"
                 ><i class="bx bxl-whatsapp"></i
               ></a>
+
+          <div style="padding: 10px; border-bottom: 1px solid #eee">
+            <div class="row">
+              <div class="col-md-2">
+                <img
+                  src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg"
+                  class="rightdonor_img"
+                />
+              </div>
+
+              <div class="col-md-10">
+                <h4 style="font-size: 17px; font-weight: bold"></h4>
+
+                <p>
+                  <i class="bi bi-cash"></i> USD 10
+                  <span style="font-weight: bold; text-decoration: underline"
+                    >First Donation</span
+                  >
+                </p>
+              </div>
+
             </div>
           </div>
         </div>
@@ -463,25 +607,47 @@
                 type: 'POST',
                 url: url,
                 data: formData,
-                success: function(data) {
-                    var comment = data.comment;
-                    var commentHtml = '<div class="row comment"><div class="col-md-1">';
-                    commentHtml += '<img src="' + comment.user_profile_image + '" class="beneficiary_img" alt="' + comment.username + '"></div>';
-                    commentHtml += '<div class="col-md-11"><h4>' + comment.username + '</h4>';
-                    commentHtml += '<p>' + comment.text + '</p></div></div>';
-                    $('.fundraiserdetail h3').after(commentHtml); // Insert after the h3 element
-                    $('#comment-text').val('');
-                    
-                    // Update comment count
-                    var commentCount = parseInt($('.fundraiserdetail h3').text().match(/\d+/)[0]); // Extract current comment count
-                    commentCount++; // Increment comment count
-                    $('.fundraiserdetail h3').text('Comments (' + commentCount + ')'); // Update comment count in the heading
+success: function(data) {
+    var comment = data.comment;
+    var commentHtml = '<div class="row comment"><div class="col-md-1">';
+    commentHtml += '<img src="' + comment.user_profile_image + '" class="beneficiary_img" alt="' + comment.username + '"></div>';
+    commentHtml += '<div class="col-md-11"><h4>' + comment.username + '</h4>';
+    commentHtml += '<p>' + comment.text + '</p>';
 
-                    // Check if there are comments and update the "No comments yet" message accordingly
-                    if (commentCount > 0) {
-                        $('.no-comments-message').hide();
-                    }
-                },
+    // Check if there are replies for this comment
+    if (comment.replies && comment.replies.length > 0) {
+        commentHtml += '<ul class="list-unstyled">';
+        // Iterate over each reply and add it to the comment
+        comment.replies.forEach(function(reply) {
+            commentHtml += '<li class="mt-1">';
+            commentHtml += '<div class="comment d-flex">';
+            commentHtml += '<div class="col-md-1">';
+            commentHtml += '<img class="rounded-circle img-thumbnail" src="' + reply.user_profile_image + '"  style="width: 40px;height:40px;" />';
+            commentHtml += '</div>';
+            commentHtml += '<div class="col-md-8 mx-3">';
+            commentHtml += '<h6 class="comment-header mb-0">' + reply.username + '</h6>';
+            commentHtml += '<p class="comment-time"><small><small>' + reply.created_at + '</small></small></p>';
+            commentHtml += '<p class="comment-content">' + reply.reply_text + '</p>';
+            commentHtml += '</div></div></li>';
+        });
+        commentHtml += '</ul>';
+    }
+
+    commentHtml += '</div></div>';
+    $('.fundraiserdetail h3').after(commentHtml); // Insert after the h3 element
+    $('#comment-text').val('');
+    
+    // Update comment count
+    var commentCount = parseInt($('.fundraiserdetail h3').text().match(/\d+/)[0]); // Extract current comment count
+    commentCount++; // Increment comment count
+    $('.fundraiserdetail h3').text('Comments (' + commentCount + ')'); // Update comment count in the heading
+
+    // Check if there are comments and update the "No comments yet" message accordingly
+    if (commentCount > 0) {
+        $('.no-comments-message').hide();
+    }
+},
+
                 error: function(xhr, errmsg, err) {
                     // Handle error
                     console.log(xhr.status + ": " + xhr.responseText);
@@ -489,14 +655,47 @@
             });
         });
 
-        // Check if there are comments initially and hide the "No comments yet" message if there are comments
+        $('.add-reply-form').submit(function(e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            var form = $(this);
+            var url = form.attr('data-url');
+            var formData = form.serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                success: function(data) {
+                    var reply = data.reply;
+                    var replyHtml = '<li class=" mt-1">';
+                    replyHtml += '<div class="comment d-flex">';
+                    replyHtml += '<div class="col-md-1">';
+                    replyHtml += '<img class="rounded-circle img-thumbnail" src="' + reply.user_profile_image + '"  style="width: 40px;height:40px;" />';
+                    replyHtml += '</div>';
+                    replyHtml += '<div class="col-md-8 mx-3">';
+                    replyHtml += '<h6 class="comment-header mb-0">' + reply.username + '</h6>';
+                    replyHtml += '<p class="comment-time"><small><small>' + reply.created_at + '</small></small></p>';
+                    replyHtml += '<p class="comment-content">' + reply.reply_text + '</p>';
+                    replyHtml += '</div></div></li>';
+
+                    // Append the new reply to the list of replies
+                    form.closest('.comment').find('.list-unstyled').append(replyHtml);
+
+                    // Clear the reply textarea
+                    form.find('textarea').val('');
+                },
+                error: function(xhr, errmsg, err) {
+                    console.log(xhr.status + ": " + xhr.responseText);
+                }
+            });
+        }); 
         var initialCommentCount = parseInt($('.fundraiserdetail h3 .comment-count').text());
         if (initialCommentCount > 0) {
             $('.no-comments-message').hide();
         }
     });
 </script>
-
 
 
 {% endblock %}

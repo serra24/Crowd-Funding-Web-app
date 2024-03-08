@@ -21,15 +21,40 @@ class Project(models.Model):
     target = models.DecimalField(max_digits=10, decimal_places=2, default=100)
     current_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     tags = models.ManyToManyField(Tag)
+    target = models.FloatField(default=100,null=True)
+    tags = models.ManyToManyField(to=Tag,related_name="projects")
     description=models.TextField(default="loream loream",max_length=800,null=True)
     start=models.DateTimeField(auto_now_add=True)
     end=models.DateTimeField()
     def __str__(self):
         return self.name
+    @classmethod
+    def GetLatestFiveProjects(self):
+        return self.objects.all()[:5]
+        # return self.objects.filter(name__in=(self.objects.all()[:5]))
+        
+    @classmethod
+    def GetProjectsByName(self,name):
+            return self.objects.filter(name__icontains=name)
+
+    
+    @classmethod
+    def GetProjectsByTag(self,tag):
+        try:
+            return (Tag.objects.filter(tag=tag).first()).projects.all()
+        except:
+            return []
 
 class Image(models.Model):
     project=models.ForeignKey(Project,on_delete=models.CASCADE)
     image = models.FileField(upload_to='projects/images',blank=True,null=True)
+
+    
+    @classmethod
+    def GetProjactImage(self,projact):
+        return f'/media/{self.objects.filter(project=projact).first().image}'
+        
+    
 
 class Donation(models.Model):
     donation = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -59,4 +84,9 @@ class Comment(models.Model):
         return f'Comment by {self.user.username} on {self.project.name}'    
 
     def __str__(self):
-        return str(self.rating)    
+        return str(self.rating)  
+class Reply(models.Model):
+    comment = models.ForeignKey(Comment, related_name='replies', on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    reply_text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)       

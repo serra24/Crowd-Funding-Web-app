@@ -9,4 +9,5 @@ urlpatterns = [
     path('project/<int:project_id>/add_comment/', add_comment, name='add_comment'), 
     path('project/<int:project_id>/donate/', donate, name='donate'),
     path('donate/success/', donate_success, name='donate_success'),
+    path('<int:comment_id>/add_reply/', add_reply, name='add_reply'),
 ]

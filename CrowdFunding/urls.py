@@ -19,7 +19,10 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 from .settings import *
-from  D_project.views import home
+
+from home.views import *
+
+
 from account.views import signup,logout_view
 urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
@@ -29,7 +32,7 @@ urlpatterns = [
     path('logout',logout_view , name='logout'),
 
     path('', home,name='home'),
-
+    path('search/',search.as_view(),name="search"),
     path('project/', include('D_project.urls')),
     path('category/', include('category.urls')),
 

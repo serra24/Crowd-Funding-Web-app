@@ -1,9 +1,8 @@
- 
-from django.shortcuts import redirect, render
-  
-from django.shortcuts import render, redirect , get_object_or_404
-  
 
+from django.shortcuts import render, redirect , get_object_or_404, redirect , get_object_or_404
+from django.shortcuts import redirect, render
+from django.shortcuts import render, redirect , get_object_or_404
+from django.http import JsonResponse  
 from account.models import Profile
 from .models import *
 from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
@@ -13,18 +12,12 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
- 
 from django.contrib.auth import logout
-
-  
 from django.db.models import Sum
 from django.http import HttpResponseRedirect
 from django.db.models import Avg
 from .models import Project, Donation, Rate
-  
 # Create your views here.
-def home(req):
-    return render(req,'home.html')
 
 class projects(ListView):
     model=Project
@@ -173,7 +166,7 @@ def calculate_average_rating(project):
     else:
         return 0       
 
-from django.http import JsonResponse
+
 
 @login_required
 def add_comment(request, project_id):
@@ -190,6 +183,24 @@ def add_comment(request, project_id):
             }
         })
     return JsonResponse({'error': 'Invalid Request'}, status=400)
+@login_required
+def add_reply(request, comment_id):
+    if request.method == 'POST':
+        reply_text = request.POST.get('reply_text')
+        if reply_text:
+            comment = get_object_or_404(Comment, id=comment_id)
+            reply = Reply.objects.create(user=request.user, comment=comment, reply_text=reply_text)
+            response_data = {
+                'reply': {
+                    'username': reply.user.username,
+                    'user_profile_image': reply.user.profile.image.url if reply.user.profile.image else 'https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg',
+                    'reply_text': reply.reply_text,
+                    'created_at': reply.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                }
+            }
+            return JsonResponse(response_data)
+        else:
+            return JsonResponse({'error': 'Reply text is empty'}, status=400)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=400) 
 
-
-  
