@@ -201,4 +201,25 @@ def add_reply(request, comment_id):
             return JsonResponse({'error': 'Reply text is empty'}, status=400)
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=400) 
+        
 
+from django.shortcuts import render, get_object_or_404
+from .models import Comment
+from .forms import ReportForm
+def report_comment(request, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+    reports = Report.objects.filter(comment=comment)
+    if request.method == 'POST':
+        form = ReportForm(request.POST)
+        
+        if form.is_valid():
+            reason = form.cleaned_data['reason']
+            
+            report = Report.objects.create(comment=comment, user=request.user, reason=reason)
+            comment.reported = True
+            comment.report_reason = reason
+            comment.save()
+            return render(request, 'D_project/succ_report.html')
+    else:
+        form = ReportForm()
+    return render(request, 'D_project/reoprtcomment.html', {'form': form, 'reports': reports})

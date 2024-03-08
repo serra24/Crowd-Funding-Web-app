@@ -59,10 +59,6 @@
           </div>
          
 
-          
-          
-          
-
        <!-- start Rating -->
             <div>
                 <h3 style="font-weight: bold; font-size: 27px; padding: 10px 0px;">Latest Rating: {{ latest_rating }}</h3>
@@ -150,12 +146,56 @@
         {% csrf_token %}
         <textarea name="reply_text" rows="2" class="col-md-12 form-control"></textarea>
         <button type="submit" class="btn bg-gradient-light w-20 mt-2">Reply</button>
+
+
     </form>
 </div>
 
             <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample{{ forloop.counter }}show_replies" aria-expanded="false" aria-controls="collapseExample{{ forloop.counter }}show_replies">
                 Show Replies
             </button>
+<!-- Update the button to open the modal -->
+<button type="button" class="btn btn-danger report-button" data-bs-toggle="modal" data-bs-target="#reportModal{{ comment.id }}" data-comment-id="{{ comment.id }}">
+        Report
+</button>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="reportModal{{ comment.id }}" tabindex="-1" aria-labelledby="reportModalLabel{{ comment.id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reportModalLabel{{ comment.id }}">Report Comment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Please select a reason for reporting this comment:</p>
+                <form action="{% url 'report_comment' comment.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="reason" class="form-label">Reason for reporting:</label>
+                        <select name="reason" id="reason" class="form-select" required>
+                            <option value="" selected disabled>Select a reason</option>
+                            <option value="spam">Spam</option>
+                            <option value="inappropriate">Inappropriate content</option>
+                            <option value="offensive">Offensive</option>
+                        
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="additional_comments" class="form-label">Additional comments (optional):</label>
+                        <textarea name="additional_comments" id="additional_comments" class="form-control"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-danger report-submit-button">Submit</button>
+                    <button type="button" class="btn btn-secondary cancel-report-button" data-bs-dismiss="modal">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
             <!-- Display replies for each comment -->
             <div class="collapse" id="collapseExample{{ forloop.counter }}show_replies">
                 <hr class="my-0" />
@@ -486,12 +526,8 @@
                         console.error("Error submitting rating:", error);
                     }
                 });
-            
-              }
-
-                
             }
-        );
+        });
 
         $('#submit-comment').click(function() {
             var form = $('#comment-form');
@@ -502,47 +538,44 @@
                 type: 'POST',
                 url: url,
                 data: formData,
-success: function(data) {
-    var comment = data.comment;
-    var commentHtml = '<div class="row comment"><div class="col-md-1">';
-    commentHtml += '<img src="' + comment.user_profile_image + '" class="beneficiary_img" alt="' + comment.username + '"></div>';
-    commentHtml += '<div class="col-md-11"><h4>' + comment.username + '</h4>';
-    commentHtml += '<p>' + comment.text + '</p>';
+                success: function(data) {
+                    var comment = data.comment;
+                    var commentHtml = '<div class="row comment"><div class="col-md-1">';
+                    commentHtml += '<img src="' + comment.user_profile_image + '" class="beneficiary_img" alt="' + comment.username + '"></div>';
+                    commentHtml += '<div class="col-md-11"><h4>' + comment.username + '</h4>';
+                    commentHtml += '<p>' + comment.text + '</p>';
 
-    // Check if there are replies for this comment
-    if (comment.replies && comment.replies.length > 0) {
-        commentHtml += '<ul class="list-unstyled">';
-        // Iterate over each reply and add it to the comment
-        comment.replies.forEach(function(reply) {
-            commentHtml += '<li class="mt-1">';
-            commentHtml += '<div class="comment d-flex">';
-            commentHtml += '<div class="col-md-1">';
-            commentHtml += '<img class="rounded-circle img-thumbnail" src="' + reply.user_profile_image + '"  style="width: 40px;height:40px;" />';
-            commentHtml += '</div>';
-            commentHtml += '<div class="col-md-8 mx-3">';
-            commentHtml += '<h6 class="comment-header mb-0">' + reply.username + '</h6>';
-            commentHtml += '<p class="comment-time"><small><small>' + reply.created_at + '</small></small></p>';
-            commentHtml += '<p class="comment-content">' + reply.reply_text + '</p>';
-            commentHtml += '</div></div></li>';
-        });
-        commentHtml += '</ul>';
-    }
+                    // Check if there are replies for this comment
+                    if (comment.replies && comment.replies.length > 0) {
+                        commentHtml += '<ul class="list-unstyled">';
+                        // Iterate over each reply and add it to the comment
+                        comment.replies.forEach(function(reply) {
+                            commentHtml += '<li class="mt-1">';
+                            commentHtml += '<div class="comment d-flex">';
+                            commentHtml += '<div class="col-md-1">';
+                            commentHtml += '<img class="rounded-circle img-thumbnail" src="' + reply.user_profile_image + '"  style="width: 40px;height:40px;" />';
+                            commentHtml += '</div>';
+                            commentHtml += '<div class="col-md-8 mx-3">';
+                            commentHtml += '<h6 class="comment-header mb-0">' + reply.username + '</h6>';
+                            commentHtml += '<p class="comment-time"><small><small>' + reply.created_at + '</small></small></p>';
+                            commentHtml += '<p class="comment-content">' + reply.reply_text + '</p>';
+                            commentHtml += '</div></div></li>';
+                        });
+                        commentHtml += '</ul>';
+                    }
 
-    commentHtml += '</div></div>';
-    $('.fundraiserdetail h3').after(commentHtml); // Insert after the h3 element
-    $('#comment-text').val('');
-    
-    // Update comment count
-    var commentCount = parseInt($('.fundraiserdetail h3').text().match(/\d+/)[0]); // Extract current comment count
-    commentCount++; // Increment comment count
-    $('.fundraiserdetail h3').text('Comments (' + commentCount + ')'); // Update comment count in the heading
-
-    // Check if there are comments and update the "No comments yet" message accordingly
-    if (commentCount > 0) {
-        $('.no-comments-message').hide();
-    }
-},
-
+                    commentHtml += '</div></div>';
+                    $('.fundraiserdetail h3').after(commentHtml); // Insert after the h3 element
+                    $('#comment-text').val('');
+                    
+                    // Update comment count
+                    var commentCount = parseInt($('.fundraiserdetail h3').text().match(/\d+/)[0]); // Extract current comment count
+                    commentCount++; // Increment comment count
+                    $('.fundraiserdetail h3').text('Comments (' + commentCount + ')'); // Update comment count in the heading
+                    if (commentCount > 0) {
+                        $('.no-comments-message').hide();
+                    }
+                },
                 error: function(xhr, errmsg, err) {
                     // Handle error
                     console.log(xhr.status + ": " + xhr.responseText);
@@ -551,7 +584,7 @@ success: function(data) {
         });
 
         $('.add-reply-form').submit(function(e) {
-            e.preventDefault(); // Prevent the default form submission
+            e.preventDefault(); 
 
             var form = $(this);
             var url = form.attr('data-url');
@@ -573,11 +606,7 @@ success: function(data) {
                     replyHtml += '<p class="comment-time"><small><small>' + reply.created_at + '</small></small></p>';
                     replyHtml += '<p class="comment-content">' + reply.reply_text + '</p>';
                     replyHtml += '</div></div></li>';
-
-                    // Append the new reply to the list of replies
                     form.closest('.comment').find('.list-unstyled').append(replyHtml);
-
-                    // Clear the reply textarea
                     form.find('textarea').val('');
                 },
                 error: function(xhr, errmsg, err) {
@@ -585,13 +614,34 @@ success: function(data) {
                 }
             });
         }); 
-        var initialCommentCount = parseInt($('.fundraiserdetail h3 .comment-count').text());
-        if (initialCommentCount > 0) {
-            $('.no-comments-message').hide();
+$('.report-button').each(function() {
+    var button = $(this);
+    var commentId = button.data('comment-id');
+    var reported = localStorage.getItem('reported_' + commentId); 
+
+    if (reported) {
+        button.text('Reported');
+        button.prop('disabled', true);
+    }
+
+    button.click(function() {
+        if (reported) {
+            return;
+        }
+
+        if (button.text().trim() === 'Report') {
+            button.text('Reported');
+            button.prop('disabled', true);
+            button.removeClass('btn-danger').addClass('btn-secondary');
+            localStorage.setItem('reported_' + commentId, 'true');
         }
     });
-</script>
+});
 
+
+
+    });
+</script>
 
 {% endblock %}
 
