@@ -1,5 +1,6 @@
 
 from django.shortcuts import render, redirect , get_object_or_404, redirect , get_object_or_404
+
 from django.shortcuts import redirect, render
   
 from django.shortcuts import render, redirect , get_object_or_404
@@ -16,7 +17,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
+
 from django.contrib.auth import logout
+
+ 
+from django.contrib.auth import logout
+
 from django.db.models import Sum
 from django.http import HttpResponseRedirect
 from django.db.models import Avg
@@ -64,6 +70,7 @@ class delete_project(LoginRequiredMixin,DeleteView):
     model = Project
     template_name = 'D_project/delete.html'
     success_url = reverse_lazy('projects')
+
 
 
 def donate(request, project_id):
@@ -134,5 +141,4 @@ def add_comment(request, project_id):
             }
         })
     return JsonResponse({'error': 'Invalid Request'}, status=400)
-
 

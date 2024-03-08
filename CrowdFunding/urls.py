@@ -23,7 +23,6 @@ from .settings import *
 from home.views import *
 
 
-
 from account.views import signup,logout_view
 urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
