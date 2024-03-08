@@ -432,15 +432,29 @@
                 // Here you can add code to submit the rating to the server
                 // For example, you can use AJAX to send the rating data to the server
                 var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
-                
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'project_details' pk=2 %}",
+                    data: {
+                        csrfmiddlewaretoken: csrfToken,  // Include CSRF token
+                        rating: rating
+                    },
+                    success: function(response) {
+                        console.log("Rating submitted successfully.");
+                        // Update the displayed latest rating
+                        $('#latest-rating').text("Latest Rating: " + rating);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error submitting rating:", error);
+                    }
+                });
             
               }
-        });
-    });
-</script>
 
-<script>
-    $(document).ready(function() {
+                
+            }
+        );
+
         $('#submit-comment').click(function() {
             var form = $('#comment-form');
             var url = form.attr('data-url');
@@ -458,6 +472,16 @@
                     commentHtml += '<p>' + comment.text + '</p></div></div>';
                     $('.fundraiserdetail h3').after(commentHtml); // Insert after the h3 element
                     $('#comment-text').val('');
+                    
+                    // Update comment count
+                    var commentCount = parseInt($('.fundraiserdetail h3').text().match(/\d+/)[0]); // Extract current comment count
+                    commentCount++; // Increment comment count
+                    $('.fundraiserdetail h3').text('Comments (' + commentCount + ')'); // Update comment count in the heading
+
+                    // Check if there are comments and update the "No comments yet" message accordingly
+                    if (commentCount > 0) {
+                        $('.no-comments-message').hide();
+                    }
                 },
                 error: function(xhr, errmsg, err) {
                     // Handle error
@@ -465,8 +489,15 @@
                 }
             });
         });
+
+        // Check if there are comments initially and hide the "No comments yet" message if there are comments
+        var initialCommentCount = parseInt($('.fundraiserdetail h3 .comment-count').text());
+        if (initialCommentCount > 0) {
+            $('.no-comments-message').hide();
+        }
     });
 </script>
+
 
 
 {% endblock %}
