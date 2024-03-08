@@ -31,10 +31,21 @@ class projects(ListView):
     template_name= 'D_project/projects.html'
     context_object_name = 'projects'
 
-class project_details(DetailView):
-    model=Project
-    template_name=  'D_project/project_details.html'
-    context_object_name=  'project'
+# class project_details(DetailView):
+#     model=Project
+#     template_name=  'D_project/project_details.html'
+#     context_object_name=  'project'
+
+def project_details(request, project_id):
+    project = Project.objects.get(id=project_id)
+    donations = Donation.objects.filter(project=project)
+    context = {
+        'project': project,
+        'donations': donations,
+        'remain': project.target - project.current_amount
+    }
+    return render(request, 'D_project/project_details.html', context)
+
 def profile(request):
     user = Profile.objects.get(user=user.id)
     return render(request, 'D_project/project_details.html',{'user':user})
@@ -52,7 +63,7 @@ def create_project(request):
             for i in files:
                 Image.objects.create(project=f, image=i)
             messages.success(request, "New Project Added")
-            return HttpResponseRedirect("projects/")
+            return HttpResponseRedirect("/")
         else:
             print(form.errors)
     else:
@@ -61,39 +72,69 @@ def create_project(request):
 
     return render(request, "D_project/create_project.html", {"form": form, "imageform": imageform})    
 
-class delete_project(LoginRequiredMixin,DeleteView):
-    login_url = '/accounts/login/'
-    model = Project
-    template_name = 'D_project/delete.html'
-    success_url = reverse_lazy('projects')
+# class delete_project(LoginRequiredMixin,DeleteView):
+#     login_url = '/accounts/login/'
+#     model = Project
+#     template_name = 'D_project/delete.html'
+#     success_url = reverse_lazy('projects')
+@login_required
+def delete_project(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+    donation = Donation.objects.filter(project=project)
+    # Calculate the total donation amount for the project
+    total_donation_amount = Donation.objects.filter(project=project).aggregate(total=models.Sum('donation'))['total']
+    if  total_donation_amount and total_donation_amount > float(project.target) * 0.25:
+        # messages.error(request, "Cannot delete the project. Total donations exceed 25% of the target amount.")
+        return render(request,'D_project/project_details.html', {'msg':'Cannot delete the project,Total donations exceed 25% of the target amount.','project':project,'donation':donation})
+    else:
+        if request.method == 'POST':
+        # Confirmation code
+            confirm = request.POST.get('confirm', False)
+            if confirm:
+                project.delete()
+                # messages.success(request, "The project has been deleted successfully.")
+                return redirect('projects')
+            else:
+                # messages.error(request, "Project deletion canceled.")
+                return redirect('project_details', project_id=project_id)
 
+            # messages.success(request, "The project has been deleted successfully.")
+        return render(request,'D_project/delete.html', {'msg':'','project':project,'donation':donation})
+        
+        
+
+    
+    # return render(request,'D_project/delete.html')
  
   
-
+@login_required
 def donate(request, project_id):
     project = Project.objects.get(id=project_id)
-    total_donation = Donation.objects.filter(project=project).aggregate(Sum('donation'))['donation__sum'] or 0
-    remaining_amount = max(project.target - total_donation, 0)
+    # total_donation = Donation.objects.filter(project=project).aggregate(Sum('donation'))['donation__sum'] or 0
+    # remaining_amount = max(project.target - total_donation, 0)
        
        
     if request.method == 'POST':
-        if 'donate_amount' in request.POST:
-            donate_amount = float(request.POST.get('donate_amount'))
-            if remaining_amount > 0 and donate_amount > 0:
-                # Create a new donation
-                donation = Donation.objects.create(project=project, donation=donate_amount)
-                # Deduct the donated amount from the total budget
-                total_bug =project.target
-                total_bug -= donate_amount
-                remaining_amount =total_bug 
-                project.save()
-                return redirect('projects')  # Redirect to a success page after donation
-            else:
-                # Redirect back to the donation page with an error message
-                return redirect('donate', project_id=project.id)
-        
-    
-    return render(request, 'D_project/donation.html', {'project': project, 'total_donation': total_donation, 'remaining_amount': remaining_amount,})
+        form = DonationForm(request.POST)
+        if form.is_valid():
+            amount = form.cleaned_data['donation']
+            # You can perform additional validation and payment processing here
+            donation = Donation.objects.create(project=project,user=request.user, donation=amount)
+            project.current_amount += amount
+            project.save()
+            return redirect('/')
+    else:
+        form = DonationForm()
+
+    context = {
+        'project': project,
+        'form': form,
+        'remain': project.target - project.current_amount
+    }
+    return render(request, 'D_project/donation.html', context)
+
+def donate_success(request):
+    return render(request, 'D_project/project_details.html')
 
 
 # def rate_project(request, project_id):
@@ -105,7 +146,7 @@ def donate(request, project_id):
 #         return redirect('project', project_id=project_id)
     
    
-   
+@login_required   
 def handle_rating_submission(request, project_id, rating):
     project = get_object_or_404(Project, pk=project_id)
     
@@ -134,6 +175,7 @@ def calculate_average_rating(project):
 
 from django.http import JsonResponse
 
+@login_required
 def add_comment(request, project_id):
     if request.method == 'POST':
         text = request.POST.get('text')

@@ -1,5 +1,6 @@
-{%extends 'base.html'%} {% block content %}
-
+{%extends 'base.html'%} 
+{% block content %}
+<h2 class="text-danger text-center">{{msg}}</h2>
 <section
   class="ftco-section bg-light categorydetailfirstsec"
   style="background: #fff"
@@ -21,16 +22,14 @@
 
         <div class="date-category">
           <span>{{ project.start }}</span>
-          <span class="btn btn-success" style="float: right; padding: 5px 20px"
-            >{{project.category}}</span
-          >
+          <span class="btn btn-success" style="float: right; padding: 5px 20px">{{project.category}}</span>
         </div>
 
         <p>{{ project.description }}</p>
-        <p></p>
+        
         <div class="row">
           <div class="col">
-              <a href="{% url 'donate' project.id %}?image_url={{ first_image.image.url }}" class="btn btn-warning" style="width:100%;padding: 10px;font-weight: bold;"><b>ADD DONATION</b></a>
+              <a href="{%url 'donate' project.id %}" class="btn btn-warning" style="width:100%;padding: 10px;font-weight: bold;"><b>Donate Now !</b></a>
 
             </div>
              <div class="col">
@@ -44,86 +43,10 @@
               Share
             </button>
             </div>
-          </div>
-         
 
-            <!-- Modal -->
-            <div
-              class="modal fade"
-              id="shareModal"
-              tabindex="-1"
-              aria-labelledby="exampleModalLabel"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button
-                      type="button"
-                      class="btn-close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    ></button>
-                  </div>
-                  <div class="modal-body">
-                    <h3
-                      style="
-                        font-size: 20px;
-                        font-weight: bold;
-                        padding: 10px 5px 5px;
-                      "
-                    >
-                      Help by sharing
-                    </h3>
-                    <h3 style="font-size: 14px; padding: 5px 0px 20px">
-                      Fundraisers shared on social networks raise up to 5x more.
-                    </h3>
+            
 
-                    <div class="socialmediasection">
-                      <div class="row">
-                        <div class="col-md-3">
-                          <a
-                            href="https://www.facebook.com/sharer.php?u=https://gofundmeclone.phpliveprojects.com//category/categorydetail/5"
-                            class="facebook"
-                            target="_blank"
-                            ><i class="bx bxl-facebook"></i
-                          ></a>
-                        </div>
-
-                        <div class="col-md-3">
-                          <a
-                            href="http://twitter.com/share?text=text&url=https://gofundmeclone.phpliveprojects.com//category/categorydetail/5&hashtags=#PHP"
-                            class="twitter"
-                            target="_blank"
-                            ><i class="bx bxl-twitter"></i
-                          ></a>
-                        </div>
-
-                        <div class="col-md-3">
-                          <a
-                            href="https://mail.google.com/mail/?view=cm&su=Animal Rescue farm&body=https://gofundmeclone.phpliveprojects.com//category/categorydetail/5"
-                            class="gmail"
-                            target="_blank"
-                            ><i class="bx bxl-gmail" target="_blank"></i
-                          ></a>
-                        </div>
-
-                        <div class="col-md-3">
-                          <a
-                            href="https://api.whatsapp.com/send?phone=&text= https://gofundmeclone.phpliveprojects.com//category/categorydetail/5"
-                            class="whatsapp"
-                            target="_blank"
-                            ><i class="bx bxl-whatsapp"></i
-                          ></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {% if user.profile == project.user.profile %}
+            {% if user.profile == project.user.profile %}
           <div class="col">
             <a
               href="{%url 'deleteProject' project.id %}"
@@ -133,8 +56,47 @@
             >
           </div>
           {% endif %}
-        </div>
+          </div>
+         
 
+          
+          
+          
+
+       <!-- start Rating -->
+            <div>
+                <h3 style="font-weight: bold; font-size: 27px; padding: 10px 0px;">Latest Rating: {{ latest_rating }}</h3>
+            
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#rateModel">
+                    Choose Rating 
+                </button>
+            
+                <div id="submittedRating"></div>
+            
+                <div class="modal fade" id="rateModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Rating Project</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <!-- This ngb-rating is an Angular directive, make sure Angular is included and configured -->
+                                <!-- This is the placeholder for ngb-rating, you may replace it with your Angular code -->
+                                <div id="rateYo1" style="margin: 10px auto"></div>
+                                <div class="counter" style="float: left; font-weight: bold; margin-left: 10px; margin-top: 7px;"></div>
+                                <div style="clear: both"></div>
+                            </div>
+                            <div class="btns d-flex justify-content-end p-4 mt-2">
+                                <button type="button" class="btn btn-warning mx-3" data-bs-dismiss="modal">Close</button>
+                                <!-- Assuming this button is for submitting the rating -->
+                                <button type="submit" class="btn btn-success" data-bs-dismiss="modal">Send Rate</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           <!-- end rating  -->
         <div class="beneficiarydetail">
 
             <h3 style=" padding: 10px 0px 20px;font-weight: bold;font-size: 22px;">Created by: </h3>
@@ -203,17 +165,17 @@
 
 
 
-            </div>
-          </div>
-        </div>
-      </div>
+            
+         
+    </div>    
+      
 
-      <div class="col-md-4">
+      <div class="col-md-4" >
 
         <div
           class="right-sharesection"
           style="
-            position: fixed;
+            
             box-shadow: 0px -2px 7px #605d5d;
             padding: 30px;
             background: #fff;
@@ -222,20 +184,22 @@
         >
           <progress
             id="file"
-            value="12"
-            max="1000"
+            value="{{ project.current_amount }}"
+            max="{{ project.target }}"
             style="width: 100%"
           ></progress>
-
+          
           <p>
-            <span style="font-weight: bold; font-size: 20px">USD 12 </span>
-            raised of &nbsp; USD 1000 goal
+            
+            <span style="font-weight: bold; font-size: 20px">USD {{ remain }} </span>
+            raised of &nbsp; USD {{ project.target }} goal
+            
           </p>
 
-          <p>2 Donations</p>
+          <p>{{ donations.count }} Donations</p>
 
           <a
-            href="https://gofundmeclone.phpliveprojects.com/fundraiser/funddonate/5"
+            href="{% url 'donate' project.id %}"
             class="btn btn-warning"
             style="
               width: 100%;
@@ -249,8 +213,8 @@
           <button
             type="button"
             class="btn btn-warning"
-            data-bs-toggle="modal"
-            data-bs-target="#shareModal"
+            data-bs-toggle="moda"
+            data-bs-target="#shareModa"
             style="
               width: 100%;
               margin-bottom: 10px;
@@ -260,214 +224,185 @@
           >
             Share
           </button>
+          {% for donation in donations %}
+          <div style="padding:10px;border-bottom:1px solid #eee">
 
-          <div style="padding: 10px; border-bottom: 1px solid #eee">
+
+
             <div class="row">
 
-              <div class="col-md-1">
-                {% if project.user.profile.image %}
-               <img src="{{project.user.profile.image.url}}" class="beneficiary_img" alt="{{project.user.username}}">
-                {% else %}
-               <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="beneficiary_img">
+           <div class="col-md-2">
 
-               {% endif %}    
-              </div>
+              {% if donation.user.profile.image.url %}
+            <img src="{{donation.user.profile.image.url}}" class="rightdonor_img" alt="">
+            {% else %}
+            <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="rightdonor_img">
+                         
+            {% endif %}
+          
+           </div>
 
-              <div class="col-md-11">
+           <div class="col-md-10">
 
-                <h4></h4>
+             <h4 style="font-size: 17px;font-weight: bold;"></h4>
 
-                <p> {{ project.user.username }} </p>
-
-              </div>
-
-            </div>
-
-          </div>
-
-          <div class="fundraiserdetail">
-
+             <p><i class="bi bi-cash"></i> USD {{donation.donation}} <span style="font-weight: bold; text-decoration: underline;">{{ donation.user.username }}</span> </p>
+            <p class="text-success">{{donation.created_at}}</p>
             
-             <div class="row donator">
+           </div>
 
-             
-              <div>
-                <h3 style="font-weight: bold; font-size: 27px; padding: 10px 0px;">Latest Rating: {{ latest_rating }}</h3>
-            
-                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#rateModel">
-                    Choose Rating 
-                </button>
-            
-                <div id="submittedRating"></div>
-            
-                <div class="modal fade" id="rateModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Rating Project</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body text-center">
-                                <!-- This ngb-rating is an Angular directive, make sure Angular is included and configured -->
-                                <!-- This is the placeholder for ngb-rating, you may replace it with your Angular code -->
-                                <div id="rateYo1" style="margin: 10px auto"></div>
-                                <div class="counter" style="float: left; font-weight: bold; margin-left: 10px; margin-top: 7px;"></div>
-                                <div style="clear: both"></div>
-                            </div>
-                            <div class="btns d-flex justify-content-end p-4 mt-2">
-                                <button type="button" class="btn btn-warning mx-3" data-bs-dismiss="modal">Close</button>
-                                <!-- Assuming this button is for submitting the rating -->
-                                <button type="submit" class="btn btn-success" data-bs-dismiss="modal">Send Rate</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-  
+         </div>
 
-            </div>
+       </div>
+       {% endfor %}  
+          <!-- <div style="padding:10px;border-bottom:1px solid #eee">
 
-             
-             <div class="row donator">
 
-              <div class="col-md-1">
-               
-           
-               
-               <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="beneficiary_img">
 
-                     
-              </div>
+            <div class="row">
 
-              <div class="col-md-11">
+           <div class="col-md-2">
 
-                <h4 style="font-size: 19px;font-weight: bold;"> </h4>
+              
+            <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="rightdonor_img">
 
-                <p><i class="bi bi-cash"></i> USD 2 &nbsp;&nbsp;&nbsp;&nbsp;  <i class="bi bi-calendar"></i>17/08/2023</p>
+                         
+        
+          
+           </div>
 
-                 <p>welcome to sdf sdf </p>
+           <div class="col-md-10">
 
-              </div>
+             <h4 style="font-size: 17px;font-weight: bold;"></h4>
 
-            </div>
+             <p><i class="bi bi-cash"></i> USD 10 <span style="font-weight: bold; text-decoration: underline;">Top Donation</span> </p>
 
-             
+          
 
-          </div>
+           </div>
+
+         </div>
+
+       </div>
+          
+
+
+       <div style="padding:10px;border-bottom:1px solid #eee">
+
+            <div class="row">
+
+          <div class="col-md-2">
+
+              
+            <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="rightdonor_img">
+
+                         
+        
+          
+           </div>
+
+           <div class="col-md-10">
+
+              <h4 style="font-size: 17px;font-weight: bold;"></h4>
+
+             <p><i class="bi bi-cash"></i> USD 10 <span style="font-weight: bold; text-decoration: underline;">First Donation</span> </p>
+
+          
+
+           </div>
+
+         </div>
+
+       </div> -->
 
 
 
                
            </div>
 
-           <div class="col-md-4">
+       
+   
+   
 
-            <div class="right-sharesection"  style="position: fixed;box-shadow: 0px -2px 7px #605d5d;padding: 30px;background: #fff; z-index: 1;">
+ </div>
 
-               <progress id="file" value="12" max="1000" style="width: 100%;"> </progress>
+  <!--start Modal -->
+  <div
+  class="modal fade"
+  id="shareModal"
+  tabindex="-1"
+  aria-labelledby="exampleModaLabel"
+  aria-hidden="true"
+>
+  <div class="moda-dialog">
+    <div class="moda-content">
+      <div class="moda-header">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <h3
+          style="
+            font-size: 20px;
+            font-weight: bold;
+            padding: 10px 5px 5px;
+          "
+        >
+          Help by sharing
+        </h3>
+        <h3 style="font-size: 14px; padding: 5px 0px 20px">
+          Fundraisers shared on social networks raise up to 5x more.
+        </h3>
 
-            <p> <span style="font-weight: bold;font-size:20px">USD 12 </span> raised of &nbsp; USD 1000 goal </p>
-
-             <p> 2 Donations</p>
-
-
-             <a href="{% url 'donate' project.id %}?image_url={{ first_image.image.url }}" class="btn btn-warning mb-3" style="width:100%;padding: 10px;font-weight: bold;"><b>ADD DONATION</b></a>
-            
-            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#shareModal" style="width:100%;margin-bottom:10px;padding: 10px;font-weight: bold;">Share</button>
-
-             
-              <div style="padding:10px;border-bottom:1px solid #eee">
-
-
-
-               <div class="row">
-
-              <div class="col-md-2">
-
-  
-                 
-
-                            
-           
-             
-  
-  
-              <div class="col-md-2">
-                <img
-                  src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg"
-                  class="rightdonor_img"
-                />
-  
-  
-
-  
-              </div>
-
-              <div class="col-md-10">
-                <h4 style="font-size: 17px; font-weight: bold"></h4>
-
-                <p>
-                  <i class="bi bi-cash"></i> USD 2
-                  <span style="font-weight: bold; text-decoration: underline"
-                    >Recent Donation</span
-                  >
-                </p>
-              </div>
+        <div class="socialmediasection">
+          <div class="row">
+            <div class="col-md-3">
+              <a
+                href="https://www.facebook.com/sharer.php?u=https://gofundmeclone.phpliveprojects.com//category/categorydetail/5"
+                class="facebook"
+                target="_blank"
+                ><i class="bx bxl-facebook"></i
+              ></a>
             </div>
-          </div>
 
-          <div style="padding: 10px; border-bottom: 1px solid #eee">
-            <div class="row">
-              <div class="col-md-2">
-                <img
-                  src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg"
-                  class="rightdonor_img"
-                />
-              </div>
-
-              <div class="col-md-10">
-                <h4 style="font-size: 17px; font-weight: bold"></h4>
-
-                <p>
-                  <i class="bi bi-cash"></i> USD 10
-                  <span style="font-weight: bold; text-decoration: underline"
-                    >Top Donation</span
-                  >
-                </p>
-              </div>
+            <div class="col-md-3">
+              <a
+                href="http://twitter.com/share?text=text&url=https://gofundmeclone.phpliveprojects.com//category/categorydetail/5&hashtags=#PHP"
+                class="twitter"
+                target="_blank"
+                ><i class="bx bxl-twitter"></i
+              ></a>
             </div>
-          </div>
 
-          <div style="padding: 10px; border-bottom: 1px solid #eee">
-            <div class="row">
-              <div class="col-md-2">
-                <img
-                  src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg"
-                  class="rightdonor_img"
-                />
-              </div>
+            <div class="col-md-3">
+              <a
+                href="https://mail.google.com/mail/?view=cm&su=Animal Rescue farm&body=https://gofundmeclone.phpliveprojects.com//category/categorydetail/5"
+                class="gmail"
+                target="_blank"
+                ><i class="bx bxl-gmail" target="_blank"></i
+              ></a>
+            </div>
 
-              <div class="col-md-10">
-                <h4 style="font-size: 17px; font-weight: bold"></h4>
-
-                <p>
-                  <i class="bi bi-cash"></i> USD 10
-                  <span style="font-weight: bold; text-decoration: underline"
-                    >First Donation</span
-                  >
-                </p>
-              </div>
-  
-              
-  
-  
-
+            <div class="col-md-3">
+              <a
+                href="https://api.whatsapp.com/send?phone=&text= https://gofundmeclone.phpliveprojects.com//category/categorydetail/5"
+                class="whatsapp"
+                target="_blank"
+                ><i class="bx bxl-whatsapp"></i
+              ></a>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
+<!-- end Modal -->
+</div>
   </div>
 </section>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -497,23 +432,9 @@
                 // Here you can add code to submit the rating to the server
                 // For example, you can use AJAX to send the rating data to the server
                 var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
-                $.ajax({
-                    type: "POST",
-                    url: "{% url 'project_details' pk=2 %}",
-                    data: {
-                        csrfmiddlewaretoken: csrfToken,  // Include CSRF token
-                        rating: rating
-                    },
-                    success: function(response) {
-                      console.log("Rating submitted successfully.");
-                      // Update the displayed latest rating
-                      $('#latest-rating').text("Latest Rating: " + rating);
-                  },
-                  error: function(xhr, status, error) {
-                      console.error("Error submitting rating:", error);
-                  }
-                });
-            }
+                
+            
+              }
         });
     });
 </script>

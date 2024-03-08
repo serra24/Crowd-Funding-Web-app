@@ -63,3 +63,6 @@ class ImageForm(forms.ModelForm):
         model = Image
         fields = ("image",)
 
+class DonationForm(forms.Form):
+    donation = forms.DecimalField(max_digits=10, decimal_places=2)
+    

@@ -25,16 +25,15 @@
       <div class="col-md-4 mt-5">
         <h2 style="width:100%; margin-bottom:10px; padding: 10px; font-weight: bold;">Donate to {{ project.name }}</h2>
         <p>Total budget: {{ project.target }}</p>
-        <p>Amount raised: {{ total_donation }}</p>
-        <p>Amount needed to reach target: {{ remaining_amount }}</p>
+        <p>Amount raised: {{remain }}</p>
+        <!-- <p>Amount needed to reach target: {{ remaining_amount }}</p> -->
         <!-- Donation form -->
         <form id="donationForm" method="post">
           {% csrf_token %}
           <div class="form-group">
-            <label for="donate_amount">Amount to Donate:</label>
-            <input type="number" step="0.01" min="0.01" id="donate_amount" name="donate_amount" class="form-control" required>
+            {{ form.as_p }}
           </div>
-          <button type="submit" class="btn btn-primary mt-3 ms-3" {% if remaining_amount <= 0 %}disabled{% endif %}>
+          <button type="submit" class="btn btn-primary mt-3 ms-3">
             Donate
           </button>
         </form>

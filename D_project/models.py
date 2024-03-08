@@ -18,7 +18,8 @@ class Project(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,default=1)
     name=models.CharField(max_length=50)
     category = models.ForeignKey(Category,on_delete=models.CASCADE,null=True)
-    target = models.FloatField(default=100,null=True)
+    target = models.DecimalField(max_digits=10, decimal_places=2, default=100)
+    current_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     tags = models.ManyToManyField(Tag)
     description=models.TextField(default="loream loream",max_length=800,null=True)
     start=models.DateTimeField(auto_now_add=True)
@@ -31,10 +32,10 @@ class Image(models.Model):
     image = models.FileField(upload_to='projects/images',blank=True,null=True)
 
 class Donation(models.Model):
-    donation = models.FloatField()
+    donation = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    # user = models.ForeignKey(Register, on_delete=models.CASCADE)    
+    user = models.ForeignKey(User, on_delete=models.CASCADE,default=1)    
 
 
     def __self__(self):

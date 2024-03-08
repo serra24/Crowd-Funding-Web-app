@@ -4,8 +4,9 @@
 <div class="container">
   <h1>Delete Product</h1>
   <p>Are you sure you want to delete the Product "{{ product.name }}"?</p>
-  <form method="post">
+  <form method="post" action="{% url 'deleteProject' project.id %}">
     {% csrf_token %}
+    <input type="hidden" name="confirm" value="True">
     <input type="submit" value="Delete" class="btn btn-danger">
     <a href="{%url 'project_details' project.id%}" class="btn btn-primary">Cancel</a>
   </form>
