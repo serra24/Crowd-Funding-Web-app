@@ -17,8 +17,8 @@ def signup(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
             user = authenticate(username=username, password=password)
-            login(request,user)
-            return redirect('/')
+            # login(request,user)
+            return redirect('login')
 
     else: ## show form
         form = SignupForm()
@@ -30,18 +30,16 @@ def profile(request):
     return render(request,'/profile/profile.html',{'profile':profile})
 
 
-
-
 def profile_edit(request):
     profile = Profile.objects.get(user=request.user)
     if request.method == 'POST':
         userform = UserForm(request.POST , instance=request.user)
-        profile_form = ProfileForm(request.POST , instance=profile)
+        profile_form = ProfileForm(request.POST ,request.FILES, instance=profile)
         if userform.is_valid() and profile_form.is_valid():
             userform.save()
-            myform = profile_form.save(commit=False)
-            myform.user = request.user
-            myform.save()
+            # myform = profile_form.save(commit=False)
+            # myform.user = request.user
+            profile_form.save()
             return redirect('/')
 
     else:  

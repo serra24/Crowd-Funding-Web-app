@@ -47,7 +47,141 @@
   <!-- Template Main CSS File -->
 
   <link href="https://gofundmeclone.phpliveprojects.com/public/frontend/assets/css/style.css" rel="stylesheet">
+<style>
 
+  .dropdown-container {
+	display: inline-block;
+	padding: 10px;
+
+	.dropdown {
+		position: relative;
+
+		&[open] .with-down-arrow::after {
+			content: "\e5c7";
+		}
+
+		&[open] summary {
+			background: #ffffff10;
+		}
+
+		summary {
+			list-style: none;
+			display: inline-block;
+			cursor: pointer;
+			border-radius: 6px;
+
+			&.avatar {
+				border-radius: 50px;
+
+				img {
+					width: 40px;
+					height: 40px;
+					border-radius: 50px;
+					display: inline-block;
+					margin: 0;
+				}
+			}
+
+			.with-down-arrow {
+				display: inline-flex;
+				padding: 5px;
+				align-items: center;
+				color: #fff;
+				line-height: 1;
+
+				&::after {
+					content: "\e5c5";
+					font-family: "Material Symbols Outlined";
+					font-weight: normal;
+					font-style: normal;
+					font-size: 1.5rem;
+					line-height: 1;
+					letter-spacing: normal;
+					text-transform: none;
+					display: inline-block;
+					white-space: nowrap;
+					word-wrap: normal;
+					direction: ltr;
+					-webkit-font-smoothing: antialiased;
+				}
+			}
+		}
+
+		&.left ul {
+			left: 0;
+		}
+
+		&.right ul {
+			right: 0;
+		}
+
+		ul {
+			padding: 0;
+			margin: 0;
+			box-shadow: 0 0 10px #00000030;
+			min-width: max-content;
+			position: absolute;
+			top: 100%;
+			border-radius: 10px;
+			background-color: #fff;
+			z-index: 2;
+
+			li {
+				list-style-type: none;
+				display: block;
+				/* If you use divider & borders, it's best to use top borders */
+				/*border-top: 1px solid #ccc;*/
+
+				&:first-of-type {
+					border: none;
+					background-color:  #f2f2f2;
+				}
+
+				p {
+					padding: 10px 15px;
+					margin: 0;
+				}
+
+				a {
+					display: flex;
+					align-items: center;
+					justify-content: flex-start;
+					padding: 10px 15px;
+					text-decoration: none;
+					line-height: 1;
+					color: #333;
+
+					&:hover {
+						color: #ff34b2;
+					}
+				}
+
+				&:first-of-type {
+					border-radius: 10px 10px 0 0;
+				}
+
+				&:last-of-type {
+					border-radius: 0 0 10px 10px;
+				}
+
+				&.divider {
+					border: none;
+					border-bottom: 1px solid #333;
+
+					/* 
+					 * removes border from Li after the divider element
+					 * best used in combination with top borders on other LIs 
+					 */
+					& ~ li {
+						border: none;
+					}
+				}
+			}
+		}
+	}
+}
+
+</style>
 </head>
 
 <body>
@@ -78,22 +212,13 @@
 
            
 
-           <li class="dropdown"><a href="#"><span>Fundraise For</span> <i class="bi bi-chevron-down"></i></a>
+           <li class="dropdown"><a href="{%url 'categories' %}"><span>Categories</span> <i class="bi bi-chevron-down"></i></a>
 
-              <ul>
-
-              <li><a href="https://gofundmeclone.phpliveprojects.com/category/viewcategory/2">Medical</a></li>
-            
-
-                <li><a href="https://gofundmeclone.phpliveprojects.com/category/viewcategory/4">Emergency</a></li>
-
-                 <li><a href="https://gofundmeclone.phpliveprojects.com/category/viewcategory/7">Memorial</a></li>
-
-                <li><a href="https://gofundmeclone.phpliveprojects.com/category/viewcategory/8">Education</a></li>
-
+              <!-- <ul>
+                
                  <li><a href="{%url 'categories' %}">See All</a></li>
 
-              </ul>
+              </ul> -->
 
             </li>
 
@@ -103,17 +228,51 @@
 
 			
             <li><a class="getstarted scrollto" href="https://gofundmeclone.phpliveprojects.com/user/login">Get Started</a></li>
+           
             {% if user.profile %}
-            <li><a class="nav-link scrollto" href="/accounts/profile/edit">Edit your profile ,{{ user.username }}</a></li>
-            <li>
+            
+           <!-- START: Dropdown Container avatar version -->
+			<div class="dropdown-container">
+				<details class="dropdown right">
+					<summary class="avatar">
             {% if user.profile.image %}
-               <img src="{{user.profile.image.url}}" class="beneficiary_img" alt="{{project.user.username}}">
-                {% else %}
-               <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="beneficiary_img">
+            <img src="{{user.profile.image.url}}" class="beneficiary_img" alt="{{project.user.username}}">
+             {% else %}
+            <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="beneficiary_img">
 
-               {% endif %}
-              </li>
-            <li><a class="nav-link scrollto" href="{% url 'logout' %}">logout</a></li>
+            {% endif %}
+          </summary>
+					<ul>
+						<!-- Optional: user details area w/ gray bg -->
+						<li>
+							<p>
+								<span class="block bold">{{ user.username }}</span>
+								<span class="block italic">{{ user.email }}</span>
+							</p>
+						</li>
+						<!-- Menu links -->
+						<li>
+							<a href="/accounts/profile/edit">
+								<span class="material-symbols-outlined">Edit your profile</span> 
+							</a>
+						</li>
+						<li>
+							<a href="/accounts/password_change/">
+								<span class="material-symbols-outlined">change password</span> 
+							</a>
+						</li>
+						
+						<!-- Optional divider -->
+						<li class="divider"></li>
+						<li>
+							<a href="/logout">
+								<span class="material-symbols-outlined"></span> Logout
+							</a>
+						</li>
+					</ul>
+				</details>
+			</div>
+			<!-- END: Dropdown Container -->
 
             {% else %}
             <li><a class="nav-link scrollto" href="/accounts/login/">Login {{ user.username }}</a></li>
