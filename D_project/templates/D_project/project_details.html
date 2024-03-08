@@ -434,7 +434,6 @@
                 var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
                 $.ajax({
                     type: "POST",
-                    url: "{% url 'project_details' pk=2 %}",
                     data: {
                         csrfmiddlewaretoken: csrfToken,  // Include CSRF token
                         rating: rating
