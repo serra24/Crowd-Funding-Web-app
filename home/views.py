@@ -21,11 +21,27 @@ class search(View):
         return render(req,'search/search.html')
     def post(self,req):
         search_word=req.POST['search']
-        print(Project.GetProjectsByName(search_word))
+        # print (Project.GetProjectsByTag(search_word))
+        # print(Project.GetProjectsByName(search_word))
+        # project_result=Project.GetProjectsByTag(search_word)| Project.GetProjectsByName(search_word)
+        project_result=set(list(Project.GetProjectsByTag(search_word))+list((Project.GetProjectsByName(search_word))))
+        print(project_result)
         images=[]
-        for project in Project.GetProjectsByName(search_word):
+        for project in project_result:
             images.append(Image.GetProjactImage(project))
-        result= zip(Project.GetProjectsByName(search_word), images)
+        result= zip(project_result, images)
         context={'result':result}
         return render(req,'search/search.html',context)
+    
+        #     search_word=req.POST['search']
+        # print (Project.GetProjectsByTag(search_word))
+        # print(Project.GetProjectsByName(search_word))
+        # # project_result=Project.GetProjectsByTag(search_word)+Project.GetProjectsByName(search_word)
+        # project_result=Project.GetProjectsByTag(search_word)|Project.GetProjectsByName(search_word)
+        # print(project_result)
+        # images=[]
+        # for project in Project.GetProjectsByName(search_word):
+        #     images.append(Image.GetProjactImage(project))
+        # result= zip(Project.GetProjectsByName(search_word), images)
+        # context={'result':result}
     
