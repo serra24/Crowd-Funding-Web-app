@@ -8,5 +8,5 @@ urlpatterns = [
     path('deleteProject/<int:pk>/',delete_project.as_view(),name="deleteProject"),
     path('donate/<int:project_id>/', donate, name='donate'),
     path('project/<int:project_id>/add_comment/', add_comment, name='add_comment'), 
-
+    path('<int:comment_id>/add_reply/', add_reply, name='add_reply'),
 ]
