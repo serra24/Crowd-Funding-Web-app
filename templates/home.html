@@ -196,7 +196,7 @@
               <div class="swiper-slide">
                 <div class="testimonial-item">
                   <a
-                    href="https://gofundmeclone.phpliveprojects.com/category/categorydetail/7"
+                    href="{%url 'project_details' project.id%}"
                   >
                     <img
                       src={{img}}
@@ -209,7 +209,7 @@
                     <p></p>
                     <p>{{project.description}}</p>
 
-                    <h3>USD {{project.target}} raised &nbsp; &nbsp; 93000000 Donations</h3>
+                    <h3>USD {{project.current_amount}} raised &nbsp; &nbsp; 93000000 Donations</h3>
                   </a>
                 </div>
               </div>

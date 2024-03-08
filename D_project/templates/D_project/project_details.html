@@ -202,213 +202,104 @@
          
     </div>    
       
+    <div class="col-md-4" >
 
-            </div>
-          </div>
-        </div>
-      </div>
+      <div
+        class="right-sharesection"
+        style="
+          
+          box-shadow: 0px -2px 7px #605d5d;
+          padding: 30px;
+          background: #fff;
+          z-index: 1;
+        "
+      >
+        <progress
+          id="file"
+          value="{{ project.current_amount }}"
+          max="{{ project.target }}"
+          style="width: 100%"
+        ></progress>
+        
+        <p>
+          
+          <span style="font-weight: bold; font-size: 20px">USD {{ remain }} </span>
+          raised of &nbsp; USD {{ project.target }} goal
+          
+        </p>
 
+        <p>{{ donations.count }} Donations</p>
 
-      <div class="col-md-4" >
-
-        <div
-          class="right-sharesection"
+        <a
+          href="{% url 'donate' project.id %}"
+          class="btn btn-warning"
           style="
-            
-            box-shadow: 0px -2px 7px #605d5d;
-            padding: 30px;
-            background: #fff;
-            z-index: 1;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-weight: bold;
+          "
+          >Donate</a
+        >
+
+        <button
+          type="button"
+          class="btn btn-warning"
+          data-bs-toggle="moda"
+          data-bs-target="#shareModa"
+          style="
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-weight: bold;
           "
         >
-          <progress
-            id="file"
-            value="{{ project.current_amount }}"
-            max="{{ project.target }}"
-            style="width: 100%"
-          ></progress>
-          
-          <p>
-            
-            <span style="font-weight: bold; font-size: 20px">USD {{ remain }} </span>
-            raised of &nbsp; USD {{ project.target }} goal
-            
-          </p>
-
-          <p>{{ donations.count }} Donations</p>
-
-          <a
-            href="{% url 'donate' project.id %}"
-            class="btn btn-warning"
-            style="
-              width: 100%;
-              margin-bottom: 10px;
-              padding: 10px;
-              font-weight: bold;
-            "
-            >Donate</a
-          >
-
-          <button
-            type="button"
-            class="btn btn-warning"
-            data-bs-toggle="moda"
-            data-bs-target="#shareModa"
-            style="
-              width: 100%;
-              margin-bottom: 10px;
-              padding: 10px;
-              font-weight: bold;
-            "
-          >
-            Share
-          </button>
-          {% for donation in donations %}
-          <div style="padding:10px;border-bottom:1px solid #eee">
+          Share
+        </button>
+        {% for donation in donations %}
+        <div style="padding:10px;border-bottom:1px solid #eee">
 
 
 
-            <div class="row">
+          <div class="row">
 
-           <div class="col-md-2">
+         <div class="col-md-2">
 
-              {% if donation.user.profile.image.url %}
-            <img src="{{donation.user.profile.image.url}}" class="rightdonor_img" alt="">
-            {% else %}
-            <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="rightdonor_img">
-                         
-            {% endif %}
-          
-           </div>
-
-           <div class="col-md-10">
-
-             <h4 style="font-size: 17px;font-weight: bold;"></h4>
-
-             <p><i class="bi bi-cash"></i> USD {{donation.donation}} <span style="font-weight: bold; text-decoration: underline;">{{ donation.user.username }}</span> </p>
-            <p class="text-success">{{donation.created_at}}</p>
-            
-           </div>
-
-
+            {% if donation.user.profile.image.url %}
+          <img src="{{donation.user.profile.image.url}}" class="rightdonor_img" alt="">
+          {% else %}
+          <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="rightdonor_img">
+                       
+          {% endif %}
+        
          </div>
+
+         <div class="col-md-10">
+
+           <h4 style="font-size: 17px;font-weight: bold;"></h4>
+
+           <p><i class="bi bi-cash"></i> USD {{donation.donation}} <span style="font-weight: bold; text-decoration: underline;">{{ donation.user.username }}</span> </p>
+          <p class="text-success">{{donation.created_at}}</p>
+          
+         </div>
+
 
        </div>
-       {% endfor %}  
-          <!-- <div style="padding:10px;border-bottom:1px solid #eee">
 
-             
-              <div>
-                <h3 style="font-weight: bold; font-size: 27px; padding: 10px 0px;">Latest Rating: {{ latest_rating }}</h3>
-            
-                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#rateModel">
-                    Choose Rating 
-                </button>
-            
-                <div id="submittedRating"></div>
-            
-                <div class="modal fade" id="rateModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Rating Project</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body text-center">
-                                <!-- This ngb-rating is an Angular directive, make sure Angular is included and configured -->
-                                <!-- This is the placeholder for ngb-rating, you may replace it with your Angular code -->
-                                <div id="rateYo1" style="margin: 10px auto"></div>
-                                <div class="counter" style="float: left; font-weight: bold; margin-left: 10px; margin-top: 7px;"></div>
-                                <div style="clear: both"></div>
-                            </div>
-                            <div class="btns d-flex justify-content-end p-4 mt-2">
-                                <button type="button" class="btn btn-warning mx-3" data-bs-dismiss="modal">Close</button>
-                                <!-- Assuming this button is for submitting the rating -->
-                                <button type="submit" class="btn btn-success" data-bs-dismiss="modal">Send Rate</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
- 
-            </div>
-
-
-
-
-            <div class="row">
-
-           <div class="col-md-2">
-
-              
-            <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="rightdonor_img">
-
-                         
+     </div>
+     {% endfor %}  
         
-          
-           </div>
-
-           <div class="col-md-10">
-
-             <h4 style="font-size: 17px;font-weight: bold;"></h4>
-
-             <p><i class="bi bi-cash"></i> USD 10 <span style="font-weight: bold; text-decoration: underline;">Top Donation</span> </p>
-
-          
-
-
-           </div>
-
-         </div>
-
-       </div>
-          
-
-
-       <div style="padding:10px;border-bottom:1px solid #eee">
-
-            <div class="row">
-
-          <div class="col-md-2">
-
-              
-            <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="rightdonor_img">
-
-                         
-        
-          
-           </div>
-
-           <div class="col-md-10">
-
-              <h4 style="font-size: 17px;font-weight: bold;"></h4>
-
-             <p><i class="bi bi-cash"></i> USD 10 <span style="font-weight: bold; text-decoration: underline;">First Donation</span> </p>
-
-          
-
-           </div>
-
-         </div>
-
-       </div> -->
-
-
-
-               
-
+                              <div id="rateYo1" style="margin: 10px auto"></div>
+                              <div class="counter" style="float: left; font-weight: bold; margin-left: 10px; margin-top: 7px;"></div>
+                              <div style="clear: both"></div>
+                          </div>
+                          
+    </div>
+            
+  </div>
+            
           </div>
-     
-
-           </div>
-
-       
    
-   
-
- </div>
-
   <!--start Modal -->
   <div
   class="modal fade"
@@ -416,7 +307,7 @@
   tabindex="-1"
   aria-labelledby="exampleModaLabel"
   aria-hidden="true"
->
+  >
   <div class="moda-dialog">
     <div class="moda-content">
       <div class="moda-header">
@@ -545,9 +436,13 @@
     </div>
   </div>
 </div>
-<!-- end Modal -->
-</div>
+        </div>
+        </div>
+    </div>
+    </div>
   </div>
+<!-- end Modal -->
+
 </section>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>

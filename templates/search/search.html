@@ -42,28 +42,28 @@ button.close.msgclose {
 
                  {%for project,img in result%}
             <div class="col-md-4">
-                <a href="https://gofundmeclone.phpliveprojects.com/category/categorydetail/1">
+                <a href="{%url 'project_details' project.id%}">
                   <div class="singlesection">
 
                  
                     <img src={{img}} class="singlesection-img img-fluid" alt="">
                 
 
-                 <div class="row" style="padding;10px">
+                 <div class="row" style="padding:10px">
 
                     <div class="col-md-6">
                 <h3>{{project.name}}</h3>
                     </div>
 
                     <div class="col-md-6">
-                        <h3 style="text-align: center;background: #009970;padding: 4px;color: #fff;border-radius: 10px;"> <span style="font-weight: bold;font-size:20px">{{project.tags}} </span></h3>
+                        <h3 style="text-align: center;background: #009970;padding: 4px;color: #fff;border-radius: 10px;"> <span style="font-weight: bold;font-size:20px">{{project.category}} </span></h3>
                     </div>
                 </div>
                     <p>
                     <p>{{project.description}}</p>
 
                       <progress id="file" value="613" max="100" style="width: 100%;"> </progress>
-                     <h3> <span style="font-weight: bold;font-size:20px">USD {{project.target}} </span> raised of &nbsp; USD 100</h3>
+                     <h3> <span style="font-weight: bold;font-size:20px">USD {{project.current_amount}} </span> raised of &nbsp; USD {{project.target}}</h3>
                           
                     
                   </div> 
