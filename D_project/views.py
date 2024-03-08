@@ -1,4 +1,6 @@
-from django.shortcuts import render, redirect , get_object_or_404
+ 
+
+from django.shortcuts import render, redirect , get_object_or_404, redirect , get_object_or_404
 
 from account.models import Profile
 from .models import *
