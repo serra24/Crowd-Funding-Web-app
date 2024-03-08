@@ -1,12 +1,8 @@
 
 from django.shortcuts import render, redirect , get_object_or_404, redirect , get_object_or_404
-
 from django.shortcuts import redirect, render
-  
 from django.shortcuts import render, redirect , get_object_or_404
-  
-
-
+from django.http import JsonResponse  
 from account.models import Profile
 from .models import *
 from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
@@ -16,16 +12,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-
- 
 from django.contrib.auth import logout
-
-
 from django.db.models import Sum
 from django.http import HttpResponseRedirect
 from django.db.models import Avg
 from .models import Project, Donation, Rate
-
 # Create your views here.
 
 class projects(ListView):
@@ -125,7 +116,7 @@ def calculate_average_rating(project):
     else:
         return 0       
 
-from django.http import JsonResponse
+
 
 def add_comment(request, project_id):
     if request.method == 'POST':
