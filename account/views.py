@@ -1,7 +1,9 @@
 from django.shortcuts import render , redirect
 from .models import Profile
 from .forms import SignupForm , UserForm , ProfileForm
-from django.contrib.auth import authenticate , login
+from django.contrib.auth import authenticate , login , logout
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
 
@@ -50,3 +52,8 @@ def profile_edit(request):
         'userform' : userform , 
         'profileform' : profile_form ,
         })
+
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect('home')    

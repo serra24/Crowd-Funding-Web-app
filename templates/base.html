@@ -104,7 +104,7 @@
 			
             <li><a class="getstarted scrollto" href="https://gofundmeclone.phpliveprojects.com/user/login">Get Started</a></li>
             {% if user.profile %}
-            <li><a class="nav-link scrollto" href="/account/profile/edit">Edit your profile ,{{ user.username }}</a></li>
+            <li><a class="nav-link scrollto" href="/accounts/profile/edit">Edit your profile ,{{ user.username }}</a></li>
             <li>
             {% if user.profile.image %}
                <img src="{{user.profile.image.url}}" class="beneficiary_img" alt="{{project.user.username}}">
@@ -113,10 +113,10 @@
 
                {% endif %}
               </li>
-            <li><a class="nav-link scrollto" href="/accounts/logout">logout</a></li>
+            <li><a class="nav-link scrollto" href="{% url 'logout' %}">logout</a></li>
 
             {% else %}
-            <li><a class="nav-link scrollto" href="/accounts/login">Login {{ user.username }}</a></li>
+            <li><a class="nav-link scrollto" href="/accounts/login/">Login {{ user.username }}</a></li>
             <li><a class="nav-link scrollto" href="/accounts/signup">Register</a></li>
             {% endif %}
           
