@@ -66,3 +66,16 @@ class ImageForm(forms.ModelForm):
 class DonationForm(forms.Form):
     donation = forms.DecimalField(max_digits=10, decimal_places=2)
     
+  
+
+class ReportForm(forms.Form):
+    REASONS = (
+        ('spam', 'Spam'),
+        ('inappropriate', 'Inappropriate content'),
+        ('offensive', 'Offensive language'),
+        ('other', 'Other'),
+    )
+
+    reason = forms.ChoiceField(choices=REASONS, widget=forms.RadioSelect)
+
+    
