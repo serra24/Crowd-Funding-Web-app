@@ -614,30 +614,6 @@
                 }
             });
         }); 
-$('.report-button').each(function() {
-    var button = $(this);
-    var commentId = button.data('comment-id');
-    var reported = localStorage.getItem('reported_' + commentId); 
-
-    if (reported) {
-        button.text('Reported');
-        button.prop('disabled', true);
-    }
-
-    button.click(function() {
-        if (reported) {
-            return;
-        }
-
-        if (button.text().trim() === 'Report') {
-            button.text('Reported');
-            button.prop('disabled', true);
-            button.removeClass('btn-danger').addClass('btn-secondary');
-            localStorage.setItem('reported_' + commentId, 'true');
-        }
-    });
-});
-
 
 
     });
