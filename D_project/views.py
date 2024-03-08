@@ -141,4 +141,24 @@ def add_comment(request, project_id):
             }
         })
     return JsonResponse({'error': 'Invalid Request'}, status=400)
+@login_required
+def add_reply(request, comment_id):
+    if request.method == 'POST':
+        reply_text = request.POST.get('reply_text')
+        if reply_text:
+            comment = get_object_or_404(Comment, id=comment_id)
+            reply = Reply.objects.create(user=request.user, comment=comment, reply_text=reply_text)
+            response_data = {
+                'reply': {
+                    'username': reply.user.username,
+                    'user_profile_image': reply.user.profile.image.url if reply.user.profile.image else 'https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg',
+                    'reply_text': reply.reply_text,
+                    'created_at': reply.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                }
+            }
+            return JsonResponse(response_data)
+        else:
+            return JsonResponse({'error': 'Reply text is empty'}, status=400)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=400) 
 
