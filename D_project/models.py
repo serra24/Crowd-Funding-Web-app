@@ -29,6 +29,14 @@ class Project(models.Model):
     def GetLatestFiveProjects(self):
         return self.objects.all()[:5]
         # return self.objects.filter(name__in=(self.objects.all()[:5]))
+        
+    @classmethod
+    def GetProjectsByName(self,name):
+        return self.objects.filter(name__icontains=name)
+    
+    # @classmethod
+    # def GetProjectsByTag(self,tag):
+    #     return self.objects.filter(tags__icontains=tag)
 
 class Image(models.Model):
     project=models.ForeignKey(Project,on_delete=models.CASCADE)

@@ -28,7 +28,7 @@ urlpatterns = [
     path('signup',signup , name='signup'),
 
     path('', home,name='home'),
-
+    path('search/',search.as_view(),name="search"),
     path('project/', include('D_project.urls')),
     path('category/', include('category.urls')),
 
