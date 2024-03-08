@@ -19,7 +19,11 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 from .settings import *
+<<<<<<< HEAD
 from home.views import *
+=======
+from  D_project.views import home
+>>>>>>> main
 from account.views import signup,logout_view
 urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),

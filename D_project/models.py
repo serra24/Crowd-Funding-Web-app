@@ -45,6 +45,7 @@ class Project(models.Model):
 class Image(models.Model):
     project=models.ForeignKey(Project,on_delete=models.CASCADE)
     image = models.FileField(upload_to='projects/images',blank=True,null=True)
+<<<<<<< HEAD
     
     @classmethod
     def GetProjactImage(self,projact):
@@ -52,6 +53,8 @@ class Image(models.Model):
         
     
     
+=======
+>>>>>>> main
 
 class Donation(models.Model):
     donation = models.FloatField()

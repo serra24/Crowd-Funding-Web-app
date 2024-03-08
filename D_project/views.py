@@ -1,6 +1,13 @@
  
+<<<<<<< HEAD
 
 from django.shortcuts import render, redirect , get_object_or_404, redirect , get_object_or_404
+=======
+from django.shortcuts import redirect, render
+  
+from django.shortcuts import render, redirect , get_object_or_404
+  
+>>>>>>> main
 
 from account.models import Profile
 from .models import *
@@ -11,10 +18,21 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+<<<<<<< HEAD
+=======
+ 
+from django.contrib.auth import logout
+
+  
+>>>>>>> main
 from django.db.models import Sum
 from django.http import HttpResponseRedirect
 from django.db.models import Avg
 from .models import Project, Donation, Rate
+<<<<<<< HEAD
+=======
+  
+>>>>>>> main
 # Create your views here.
 
 class projects(ListView):
@@ -58,6 +76,11 @@ class delete_project(LoginRequiredMixin,DeleteView):
     template_name = 'D_project/delete.html'
     success_url = reverse_lazy('projects')
 
+<<<<<<< HEAD
+=======
+ 
+  
+>>>>>>> main
 
 def donate(request, project_id):
     project = Project.objects.get(id=project_id)
@@ -139,3 +162,7 @@ def add_comment(request, project_id):
     return JsonResponse({'error': 'Invalid Request'}, status=400)
 
 
+<<<<<<< HEAD
+=======
+  
+>>>>>>> main
