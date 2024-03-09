@@ -12,5 +12,6 @@ urlpatterns = [
     path('<int:comment_id>/add_reply/', add_reply, name='add_reply'),
     path('comment/<int:comment_id>/report/', report_comment, name='report_comment'),
     path('project/<int:project_id>/report/', report_project, name='report_project'),
+    path('add_rating/<int:project_id>/', add_rating, name='add_rating'),
 
 ]
