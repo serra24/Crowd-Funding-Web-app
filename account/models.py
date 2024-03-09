@@ -23,7 +23,7 @@ class Profile(models.Model):
                                     code='invalid_phone_number',
             ),
         ],)
-    addres = models.CharField(max_length=50 , blank=True, null=True)
+    address = models.CharField(max_length=50 , blank=True, null=True)
     image= models.ImageField(upload_to='users/images',blank=True,null=True)
     # image
     # age

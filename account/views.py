@@ -5,7 +5,8 @@ from .models import Profile
 from .forms import SignupForm , UserForm , ProfileForm
 from django.contrib.auth import authenticate , login , logout
 from django.contrib.auth.decorators import login_required
-
+from django.core.mail import send_mail
+from django.conf import settings
 # Create your views here.
 
 
@@ -13,18 +14,25 @@ from django.contrib.auth.decorators import login_required
 def signup(request):
     if request.method == 'POST':  ## save
         form = SignupForm(request.POST)
-        if form.is_valid() :
-            form.save()
-            
+        if form.is_valid():
+            username = request.POST['username']
+            email = request.POST['email']
+            subject ='welcome to our web'
+            message = f'Hi {username}, welcome to our website.'
+            from_email = settings.EMAIL_HOST_USER
+            recipients_list = [email]  
+            send_mail(subject, message, from_email, recipients_list, fail_silently=False)
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
+            form.save()
             user = authenticate(username=username, password=password)
-            # login(request,user)
+            
+            login(request,user)
             return redirect('login')
-
     else: ## show form
         form = SignupForm()
     return render(request,'registration/signup.html',{'form':form})
+
 
 
 def profile(request):

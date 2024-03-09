@@ -28,7 +28,7 @@ class UserForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['phone_number' , 'addres','image']
+        fields = ['phone_number' , 'address','image']
         widgets = {
             'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
             'address': forms.TextInput(attrs={'class': 'form-control'}),
