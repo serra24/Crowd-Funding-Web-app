@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db.models import Avg
+
 class Category(models.Model):
     name = models.CharField(max_length = 50)
     image = models.ImageField(upload_to='categories/images',blank=True,null=True)
@@ -30,11 +32,9 @@ class Project(models.Model):
         return self.name
 
     def update_average_rating(self):
-        total_ratings = Rating.objects.filter(project=self).aggregate(total=models.Sum('rating'))['total']
-        num_ratings = Rating.objects.filter(project=self).count()
-        if total_ratings is not None and num_ratings:
-            self.average_rating = total_ratings / num_ratings
-            self.save()
+        average_rating = Rating.objects.filter(project=self).aggregate(Avg('rating'))['rating__avg']
+        self.average_rating = average_rating or 0
+        self.save()
     @classmethod
     def GetLatestFiveProjects(self):
         return self.objects.all()[:5]
