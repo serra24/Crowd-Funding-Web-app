@@ -78,4 +78,5 @@ class ReportForm(forms.Form):
 
     reason = forms.ChoiceField(choices=REASONS, widget=forms.RadioSelect)
 
-    
+
+  
