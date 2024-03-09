@@ -442,7 +442,9 @@
            {% endfor %}  
               
               <div  class="text-center" style="margin: 10px auto">  
-
+<div id="average-rating" class="text-center" style="margin: 10px auto">
+    Average Rating: {{ project.average_rating }}
+</div>
 <form id="rating-form" method="post" action="{% url 'add_rating' project.id %}">
   {% csrf_token %}
   <div id="star-rating-section">
