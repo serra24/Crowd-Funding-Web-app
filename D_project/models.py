@@ -1,8 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
-# Create your models here.
-
+from django.core.validators import MinValueValidator, MaxValueValidator
 class Category(models.Model):
     name = models.CharField(max_length = 50)
     image = models.ImageField(upload_to='categories/images',blank=True,null=True)
