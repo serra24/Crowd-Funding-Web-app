@@ -16,7 +16,7 @@ from django.contrib.auth import logout
 from django.db.models import Sum
 from django.http import HttpResponseRedirect
 from django.db.models import Avg
-from .models import Project, Donation, Rate
+from .models import Project, Donation
 from django.http import HttpResponse
 
 class projects(ListView):
