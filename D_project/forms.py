@@ -54,7 +54,7 @@ class ProjectForm(forms.ModelForm):
             "name": forms.TextInput(attrs={"class": "form-control"}),
             "category": forms.Select(attrs={"class": "form-control"}),
             "target": forms.NumberInput(attrs={"class": "form-control"}),
-            "tags": forms.TextInput(attrs={"class": "form-control"}),
+            "tags": forms.Select(attrs={"class": "form-control"}),
             "description": forms.Textarea(attrs={"class": "form-control", "rows": "4"}),
             "end": forms.DateInput(attrs={"class": "form-control"}),
         }

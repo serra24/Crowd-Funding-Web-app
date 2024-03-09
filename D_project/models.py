@@ -45,6 +45,9 @@ class Project(models.Model):
             return (Tag.objects.filter(tag=tag).first()).projects.all()
         except:
             return []
+        
+    def get_similar_projects(self):
+        return Project.objects.filter(tags__in=self.tags.all()).exclude(id=self.id).distinct()    
 
 class Image(models.Model):
     project=models.ForeignKey(Project,on_delete=models.CASCADE)
