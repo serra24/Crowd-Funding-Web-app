@@ -7,3 +7,6 @@ admin.site.register(Image)
 admin.site.register(Tag)
 admin.site.register(Donation)
 admin.site.register(Rate)
+admin.site.register(Report)
+admin.site.register(ReportProject)
+

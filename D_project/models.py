@@ -87,8 +87,7 @@ class Comment(models.Model):
     def __str__(self):
         return f'Comment by {self.user.username} on {self.project.name}'    
 
-    def __str__(self):
-        return str(self.rating)  
+      
 class Reply(models.Model):
     comment = models.ForeignKey(Comment, related_name='replies', on_delete=models.CASCADE)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
