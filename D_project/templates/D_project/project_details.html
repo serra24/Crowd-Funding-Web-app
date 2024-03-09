@@ -1,5 +1,6 @@
 {%extends 'base.html'%} 
 {% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <style>
   .slider {
   width: 100%;
@@ -27,6 +28,13 @@
   height: 100%;
   object-fit: cover;
 }
+  .star-btn i {
+    color: #ccc; /* Default star color */
+  }
+
+  .star-btn.filled i {
+    color: gold; /* Filled star color */
+  }
 </style>
 <h2 class="text-danger text-center">{{msg}}</h2>
 <section
@@ -114,40 +122,6 @@
           </div>
          
 
-       <!-- start Rating -->
-            <div>
-                <h3 style="font-weight: bold; font-size: 27px; padding: 10px 0px;">Latest Rating: {{ latest_rating }}</h3>
-            
-                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#rateModel">
-                    Choose Rating 
-                </button>
-            
-                <div id="submittedRating"></div>
-            
-                <div class="modal fade" id="rateModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Rating Project</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body text-center">
-                                <!-- This ngb-rating is an Angular directive, make sure Angular is included and configured -->
-                                <!-- This is the placeholder for ngb-rating, you may replace it with your Angular code -->
-                                <div id="rateYo1" style="margin: 10px auto"></div>
-                                <div class="counter" style="float: left; font-weight: bold; margin-left: 10px; margin-top: 7px;"></div>
-                                <div style="clear: both"></div>
-                            </div>
-                            <div class="btns d-flex justify-content-end p-4 mt-2">
-                                <button type="button" class="btn btn-warning mx-3" data-bs-dismiss="modal">Close</button>
-                                <!-- Assuming this button is for submitting the rating -->
-                                <button type="submit" class="btn btn-success" data-bs-dismiss="modal">Send Rate</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-           <!-- end rating  -->
         <div class="beneficiarydetail">
 
             <h3 style=" padding: 10px 0px 20px;font-weight: bold;font-size: 22px;">Created by: </h3>
@@ -429,7 +403,23 @@
            </div>
            {% endfor %}  
               
-                                    <div id="rateYo1" style="margin: 10px auto"></div>
+              <div  class="text-center" style="margin: 10px auto">  
+		<form id="rating-form" method="post" action="{% url 'add_rating' project.id %}">
+		  {% csrf_token %}
+		  <div id="star-rating-section">
+
+		    <div class="star-rating">
+		    <button class="star-btn" data-rating="1"><i class="fas fa-star"></i></button>
+		    <button class="star-btn" data-rating="2"><i class="fas fa-star"></i></button>
+		    <button class="star-btn" data-rating="3"><i class="fas fa-star"></i></button>
+		    <button class="star-btn" data-rating="4"><i class="fas fa-star"></i></button>
+		    <button class="star-btn" data-rating="5"><i class="fas fa-star"></i></button>
+		    </div>
+		    <input type="hidden" id="selected-rating-input" name="rating" value="">
+		   
+		  </div>
+		  
+		</form></div>
                                     <div class="counter" style="float: left; font-weight: bold; margin-left: 10px; margin-top: 7px;"></div>
                                     <div style="clear: both"></div>
                                 </div>
@@ -580,46 +570,86 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 <script>
     $(function() {
-        var rating = 0;
+ var storedRating = localStorage.getItem('selectedRating');
+  if (storedRating) {
+    var $starButtons = $('.star-btn');
+    $starButtons.removeClass('filled');
+    $starButtons.each(function() {
+      var btnRating = $(this).data('rating');
+      if (btnRating <= storedRating) {
+        $(this).addClass('filled');
+      }
+    });
+    $('#selected-rating').text('You selected: ' + storedRating + ' stars');
+    $('#selected-rating-input').val(storedRating);
+  }
 
-        // Initialize RateYo plugin with readOnly option set to false and starHover set to false
-        $("#rateYo1").rateYo({
-            rating: rating,
-            numStars: 5,
-            precision: 2,
-            starWidth: "64px",
-            spacing: "5px",
-            readOnly: false, // Enable interactivity
-            starHover: false, // Disable hover effect
-            multiColor: {
-                startColor: "#000000",
-                endColor: "#ffffff"
-            },
-            // Triggered when the rating is set
-            onSet: function(rating) {
-                // Update the display with the submitted rating
-                $("#submittedRating").text("Your rating is: " + rating);
-                
-                // Here you can add code to submit the rating to the server
-                // For example, you can use AJAX to send the rating data to the server
-                var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
-                $.ajax({
-                    type: "POST",
-                    data: {
-                        csrfmiddlewaretoken: csrfToken,  // Include CSRF token
-                        rating: rating
-                    },
-                    success: function(response) {
-                        console.log("Rating submitted successfully.");
-                        // Update the displayed latest rating
-                        $('#latest-rating').text("Latest Rating: " + rating);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error submitting rating:", error);
-                    }
-                });
-            }
-        });
+  $('.star-btn').click(function() {
+    var rating = $(this).data('rating');
+    var $starButtons = $('.star-btn');
+
+    // Check if the clicked star is already filled
+    var isFilled = $(this).hasClass('filled');
+
+    // Remove filled state from all star buttons
+    $starButtons.removeClass('filled');
+
+    // If the clicked star was not already filled, fill all stars up to it
+    if (!isFilled) {
+      $('#selected-rating').text('You selected: ' + rating + ' stars');
+      $('#selected-rating-input').val(rating);
+
+      $starButtons.each(function() {
+        var btnRating = $(this).data('rating');
+        if (btnRating <= rating) {
+          $(this).addClass('filled');
+        }
+      });
+
+      localStorage.setItem('selectedRating', rating);
+
+      // Make an AJAX call to add or update the rating
+      $.ajax({
+        url: '/add_rating/' + project_id + '/',
+        type: 'POST',
+        data: {
+          csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val(),
+          rating: rating
+        },
+        success: function(response) {
+          // Handle success response if needed
+          console.log(response);
+        },
+        error: function(xhr, status, error) {
+          // Handle error response if needed
+          console.error(xhr.responseText);
+        }
+      });
+    } else {
+      $('#selected-rating').text('');
+      $('#selected-rating-input').val('');
+
+      localStorage.removeItem('selectedRating');
+
+      // Make an AJAX call to remove the rating from the database
+      $.ajax({
+        url: '/add_rating/' + project_id + '/',
+        type: 'POST',
+        data: {
+          csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val(),
+          rating: '' // Sending an empty rating to indicate removal
+        },
+        success: function(response) {
+          // Handle success response if needed
+          console.log(response);
+        },
+        error: function(xhr, status, error) {
+          // Handle error response if needed
+          console.error(xhr.responseText);
+        }
+      });
+    }
+  });
 
         $('#submit-comment').click(function() {
             var form = $('#comment-form');

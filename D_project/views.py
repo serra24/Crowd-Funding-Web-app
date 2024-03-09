@@ -16,8 +16,8 @@ from django.contrib.auth import logout
 from django.db.models import Sum
 from django.http import HttpResponseRedirect
 from django.db.models import Avg
-from .models import Project, Donation, Rate
-# Create your views here.
+from .models import Project, Donation
+from django.http import HttpResponse
 
 class projects(ListView):
     model=Project
@@ -137,36 +137,45 @@ def donate_success(request):
 #         # Assuming user is authenticated and rating is between 1 and 5
 #         project.ratings.create(user=request.user, rating=rating)
 #         return redirect('project', project_id=project_id)
-    
-   
-@login_required   
-def handle_rating_submission(request, project_id, rating):
-    project = get_object_or_404(Project, pk=project_id)
-    
-    # Create a new Rate object
-    rate = Rate.objects.create(rating=rating, project=project)
 
-    # Update the average rating for the project
-    project.rate = calculate_average_rating(project)
-    project.save()
 
-    # Retrieve the average rating for the project
-    average_rating = project.rate
+@login_required
+def add_rating(request, project_id):
+    if request.method == 'POST':
+        project = Project.objects.get(id=project_id)
+        user = request.user
+        rating_value = request.POST.get('rating')
+        
+        # Check if the rating value is provided and not empty
+        if rating_value:
+            try:
+                rating_value = int(rating_value)
+            except ValueError:
+                return JsonResponse({'error': 'Invalid rating value'}, status=400)
+            
+            # Check if the user has already rated the project
+            existing_rating = Rating.objects.filter(project=project, user=user).first()
+            if existing_rating:
+                existing_rating.rating = rating_value
+                existing_rating.save()
+            else:
+                Rating.objects.create(project=project, user=user, rating=rating_value)
+            
+            # Update the average rating of the project
+            project.update_average_rating()
+            
+            # Return empty response (status code 204) for successful submission
+            return HttpResponse(status=204)
+        else:
+            # If the rating value is empty, remove the existing rating from the database
+            existing_rating = Rating.objects.filter(project=project, user=user).first()
+            if existing_rating:
+                existing_rating.delete()
+            
 
-    # Retrieve the latest rating for the project
-    latest_rating = rate.rating
-    # Handle the rest of your response or redirect as needed
-    return render(request, 'D_project/donation.html',  {'average_rating': average_rating, 'latest_rating': latest_rating})
-
-def calculate_average_rating(project):
-    average_rating = Rate.objects.filter(project=project).aggregate(Avg('rating'))['rating__avg']
-
-    if average_rating is not None:
-        return round(average_rating, 2)
+            return HttpResponse(status=204)
     else:
-        return 0       
-
-
+        return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 @login_required
 def add_comment(request, project_id):
