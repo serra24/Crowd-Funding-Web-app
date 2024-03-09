@@ -36,11 +36,12 @@ def featured_projects(request):
 def project_details(request, project_id):
     project = Project.objects.get(id=project_id)
     donations = Donation.objects.filter(project=project)
+    similarProjects= Project.objects.filter(category=project.category)
     context = {
         'project': project,
         'donations': donations,
         'remain': project.target - project.current_amount,
-        'similarProjects': Project.objects.filter(category=project.category)
+        'similarProjects': similarProjects.exclude(id=project_id)
     }
     return render(request, 'D_project/project_details.html', context)
 
