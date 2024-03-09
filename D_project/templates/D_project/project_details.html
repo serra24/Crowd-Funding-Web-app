@@ -337,7 +337,14 @@
     </div>
             
   </div>
-            
+          {% if similarProjects %}
+  {% for project in similarProjects %}
+  
+{{project.name}}
+  {% endfor %}
+  {%else%}
+  <p>{{similarProjects}}</p>
+{% endif %}
           </div>
    
   <!--start Modal -->

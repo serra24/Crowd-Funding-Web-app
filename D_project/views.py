@@ -39,7 +39,8 @@ def project_details(request, project_id):
     context = {
         'project': project,
         'donations': donations,
-        'remain': project.target - project.current_amount
+        'remain': project.target - project.current_amount,
+        'similarProjects': Project.objects.filter(category=project.category)
     }
     return render(request, 'D_project/project_details.html', context)
 
