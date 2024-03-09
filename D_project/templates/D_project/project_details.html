@@ -133,7 +133,7 @@
         <div class="col-md-1">
             <!-- Display commenter's profile image here -->
             {% if comment.user.profile.image %}
-                <img src="{{ comment.user.profile.image}}" class="beneficiary_img" alt="{{ comment.user.username }}">
+                <img src="{{  comment.user.profile.image.url }}" class="beneficiary_img" alt="{{ comment.user.username }}">
             {% else %}
                 <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="beneficiary_img">
             {% endif %}
@@ -208,7 +208,7 @@
                         <li class=" mt-1">
                             <div class="comment d-flex">
                                 <div class="col-md-1">
-                                    <img class="rounded-circle img-thumbnail" src="{{ reply.user.profile_img.url }}"  style="width: 40px;height:40px;" />
+                                    <img class="rounded-circle img-thumbnail" src="{{ reply.user.profile.image.url }}"  style="width: 40px;height:40px;" />
                                 </div>
                                 <div class="col-md-8 mx-3">
                                     <h6 class="comment-header mb-0">{{ reply.user|title }}</h6>
