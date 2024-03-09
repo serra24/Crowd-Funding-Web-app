@@ -15,20 +15,27 @@ class Tag(models.Model):
         return self.tag
    
 class Project(models.Model):
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,default=1)
-    name=models.CharField(max_length=50)
-    category = models.ForeignKey(Category,on_delete=models.CASCADE,null=True)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default=1)
+    name = models.CharField(max_length=50)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     target = models.DecimalField(max_digits=10, decimal_places=2, default=100)
     current_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    # tags = models.ManyToManyField(Tag)
-    # target = models.FloatField(default=100,null=True)
-    tags = models.ManyToManyField(to=Tag,related_name="projects")
-    description=models.TextField(default="loream loream",max_length=800,null=True)
-    start=models.DateTimeField(auto_now_add=True)
-    end=models.DateTimeField()
+    tags = models.ManyToManyField(Tag, related_name="projects")
+    description = models.TextField(default="lorem ipsum", max_length=800, null=True)
+    start = models.DateTimeField(auto_now_add=True)
+    end = models.DateTimeField()
     is_featured = models.BooleanField(default=False)
+    average_rating = models.DecimalField(max_digits=3, decimal_places=2, default=0)
+
     def __str__(self):
         return self.name
+
+    def update_average_rating(self):
+        total_ratings = Rating.objects.filter(project=self).aggregate(total=models.Sum('rating'))['total']
+        num_ratings = Rating.objects.filter(project=self).count()
+        if total_ratings is not None and num_ratings:
+            self.average_rating = total_ratings / num_ratings
+            self.save()
     @classmethod
     def GetLatestFiveProjects(self):
         return self.objects.all()[:5]
@@ -45,6 +52,7 @@ class Project(models.Model):
             return (Tag.objects.filter(tag=tag).first()).projects.all()
         except:
             return []
+
 
 class Image(models.Model):
     project=models.ForeignKey(Project,on_delete=models.CASCADE)
