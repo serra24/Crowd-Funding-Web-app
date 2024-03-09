@@ -74,6 +74,7 @@ class Donation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,default=1)    
 
 
+
     def __self__(self):
         return self.donation
 
