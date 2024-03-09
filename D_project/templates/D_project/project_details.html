@@ -570,7 +570,86 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 <script>
     $(function() {
+ var storedRating = localStorage.getItem('selectedRating');
+  if (storedRating) {
+    var $starButtons = $('.star-btn');
+    $starButtons.removeClass('filled');
+    $starButtons.each(function() {
+      var btnRating = $(this).data('rating');
+      if (btnRating <= storedRating) {
+        $(this).addClass('filled');
+      }
+    });
+    $('#selected-rating').text('You selected: ' + storedRating + ' stars');
+    $('#selected-rating-input').val(storedRating);
+  }
 
+  $('.star-btn').click(function() {
+    var rating = $(this).data('rating');
+    var $starButtons = $('.star-btn');
+
+    // Check if the clicked star is already filled
+    var isFilled = $(this).hasClass('filled');
+
+    // Remove filled state from all star buttons
+    $starButtons.removeClass('filled');
+
+    // If the clicked star was not already filled, fill all stars up to it
+    if (!isFilled) {
+      $('#selected-rating').text('You selected: ' + rating + ' stars');
+      $('#selected-rating-input').val(rating);
+
+      $starButtons.each(function() {
+        var btnRating = $(this).data('rating');
+        if (btnRating <= rating) {
+          $(this).addClass('filled');
+        }
+      });
+
+      localStorage.setItem('selectedRating', rating);
+
+      // Make an AJAX call to add or update the rating
+      $.ajax({
+        url: '/add_rating/' + project_id + '/',
+        type: 'POST',
+        data: {
+          csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val(),
+          rating: rating
+        },
+        success: function(response) {
+          // Handle success response if needed
+          console.log(response);
+        },
+        error: function(xhr, status, error) {
+          // Handle error response if needed
+          console.error(xhr.responseText);
+        }
+      });
+    } else {
+      $('#selected-rating').text('');
+      $('#selected-rating-input').val('');
+
+      localStorage.removeItem('selectedRating');
+
+      // Make an AJAX call to remove the rating from the database
+      $.ajax({
+        url: '/add_rating/' + project_id + '/',
+        type: 'POST',
+        data: {
+          csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val(),
+          rating: '' // Sending an empty rating to indicate removal
+        },
+        success: function(response) {
+          // Handle success response if needed
+          console.log(response);
+        },
+        error: function(xhr, status, error) {
+          // Handle error response if needed
+          console.error(xhr.responseText);
+        }
+      });
+    }
+  });
 
         $('#submit-comment').click(function() {
             var form = $('#comment-form');
