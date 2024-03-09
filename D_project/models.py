@@ -77,11 +77,13 @@ class Donation(models.Model):
 
 
 
-class Rate(models.Model):
-    rating = models.IntegerField()
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='ratings')
-    # user = models.ForeignKey(Register, on_delete=models.CASCADE)    
+class Rating(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
 
+    def __str__(self):
+        return f"Rating for {self.project.name} by {self.user.username}"
 
 class Comment(models.Model):
     project = models.ForeignKey(Project, related_name='comments', on_delete=models.CASCADE)
