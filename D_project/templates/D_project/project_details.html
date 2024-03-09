@@ -312,9 +312,10 @@
             
   </div>
     <div><h3>Similar Projects</h3></div>
+    
           {% if similarProjects %}
   {% for project in similarProjects %}
-  
+
   
   <div class="col-md-4">
       <a href="{%url 'project_details' project.id%}">

@@ -1,4 +1,6 @@
 from django.shortcuts import render , redirect
+
+from D_project.models import Donation, Project
 from .models import Profile
 from .forms import SignupForm , UserForm , ProfileForm
 from django.contrib.auth import authenticate , login , logout
@@ -29,9 +31,12 @@ def profile(request):
     profile = Profile.objects.get(user=request.user)
     return render(request,'/profile/profile.html',{'profile':profile})
 
-
+@login_required
 def profile_edit(request):
     profile = Profile.objects.get(user=request.user)
+    projects = Project.objects.filter(user=request.user)
+    donations = Donation.objects.filter(user=request.user)
+
     if request.method == 'POST':
         userform = UserForm(request.POST , instance=request.user)
         profile_form = ProfileForm(request.POST ,request.FILES, instance=profile)
@@ -49,6 +54,9 @@ def profile_edit(request):
     return render(request,'profile/profile_edit.html',{
         'userform' : userform , 
         'profileform' : profile_form ,
+        'projects':projects,
+        'donations': donations
+        
         })
 
 @login_required
@@ -81,3 +89,4 @@ def delete_account_view(request):
         error_message = None
 
     return render(request, 'registration/delete_account.html', {'error_message': error_message})
+

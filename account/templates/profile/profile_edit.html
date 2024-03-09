@@ -1,6 +1,28 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: Arial, sans-serif;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        color: #333;
+    }
+
+    tr:hover {
+        background-color: #f5f5f5;
+    }
+</style>
 
 <div class="container-xl px-4 mt-4">
     <h2>Profile Edit</h2>
@@ -92,9 +114,83 @@
 
     </div>
 
+     
+</div>
     </div>
-    </div>
-    </div>
+
+
+    <div class="row">
+        {%if projects%}
+        <h2>Your Projects</h2>
+        {%for project in projects%}
+        <div class="col-6 ">
+            <div class="col-md-4">
+                <a href="{%url 'project_details' project.id%}">
+                  <div class="singlesection">
+          
+                    {% with first_image=project.image_set.first %}
+                 
+                    <img src="{{ first_image.image.url }}" class="singlesection-img img-fluid" alt="{{first_image.id}}">
+                
+                    {% endwith %}
+          
+                 <div class="row" style="padding:10px">
+          
+                    <div class="col-md-6">
+                        <h3>{{project.name}}</h3>
+                    </div>
+          
+                    <div class="col-md-6">
+                        <h3 style="text-align: center;background: #009970;padding: 4px;color: #fff;border-radius: 10px;"> <span style="font-weight: bold;font-size:20px">{{project.category}} </span></h3>
+                    </div>
+                </div>
+                    
+                    
+          
+                      <progress id="file" value="{{project.current_amount}}" max="{{project.target}}" style="width: 100%;"> </progress>
+                     <h3> <span style="font-weight: bold;font-size:20px">USD {{project.current_amount}} </span> paid of &nbsp; USD {{project.target}}</h3>
+                          
+                    
+                  </div> 
+              </a>
+          
+                   </div>
+        </div>
+        {% endfor %}
+            {%else%}
+            <p>No projects found</p>
+            {%endif%}
+    </div> 
+    
+   
+    
+    <h2>Your Donations</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Project</th>
+                <th>Amount</th>
+                <th>Time</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for donation in donations %}
+                <tr>
+                    <td > <a href="{%url 'project_details' donation.project.id%}">{{ donation.project }}</a></td>
+                    <td>{{ donation.donation }}</td>
+                    <td>{{ donation.created_at }}</td>
+
+                </tr>
+            {% empty %}
+                <tr>
+                    <td>No donations found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</div>
 <!-- <form method="POST">
     {% csrf_token %}
     {{userform}}
