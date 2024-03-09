@@ -118,4 +118,22 @@ class Report(models.Model):
     def __str__(self):
         return f"Report by {self.user.username} on Comment {self.comment.id}"
          
+class ReportProject(models.Model):
+    REASON_CHOICES = [
+        ('spam', 'Spam'),
+        ('inappropriate', 'Inappropriate content'),
+        ('offensive', 'Offensive language'),
+        ('other', 'Other'),
+    ]
+
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    reason = models.CharField(max_length=20, choices=REASON_CHOICES)
+    additional_comments = models.TextField(blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Report by {self.user.username} on Project {self.project.id}"
+
 

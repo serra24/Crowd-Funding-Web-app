@@ -8,6 +8,9 @@
   <div class="container">
     <div class="row">
       <div class="col-md-8 textsec">
+      <!-- Inside your project's template -->
+
+
         <h3 style="padding: 20px 0px; font-size: 30px; font-weight: bold">
           {{ project.name }}
         </h3>
@@ -23,6 +26,7 @@
         <div class="date-category">
           <span>{{ project.start }}</span>
           <span class="btn btn-success" style="float: right; padding: 5px 20px">{{project.category}}</span>
+          <a href="{% url 'report_project' project.id %}" class="btn text-danger">Report Project</a>
         </div>
 
         <p>{{ project.description }}</p>
@@ -137,7 +141,7 @@
         <div class="col-md-11">
             <h4>{{ comment.user.username }}</h4>
             <p>{{ comment.text }}</p>
-            <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample{{ forloop.counter }}add_replies" aria-expanded="false" aria-controls="collapseExample{{ forloop.counter }}add_replies">
+            <button class="btn text-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample{{ forloop.counter }}add_replies" aria-expanded="false" aria-controls="collapseExample{{ forloop.counter }}add_replies">
                 Reply
             </button>
            <!-- Inside the comment loop -->
@@ -145,17 +149,17 @@
     <form class="d-flex flex-column align-items-end add-reply-form" data-url="{% url 'add_reply' comment.id %}">
         {% csrf_token %}
         <textarea name="reply_text" rows="2" class="col-md-12 form-control"></textarea>
-        <button type="submit" class="btn bg-gradient-light w-20 mt-2">Reply</button>
+        <button type="submit" class="btn text-success">Reply</button>
 
 
     </form>
 </div>
 
-            <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample{{ forloop.counter }}show_replies" aria-expanded="false" aria-controls="collapseExample{{ forloop.counter }}show_replies">
+            <button class="btn text-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample{{ forloop.counter }}show_replies" aria-expanded="false" aria-controls="collapseExample{{ forloop.counter }}show_replies">
                 Show Replies
             </button>
 <!-- Update the button to open the modal -->
-<button type="button" class="btn btn-danger report-button" data-bs-toggle="modal" data-bs-target="#reportModal{{ comment.id }}" data-comment-id="{{ comment.id }}">
+<button type="button" class="btn text-danger report-button" data-bs-toggle="modal" data-bs-target="#reportModal{{ comment.id }}" data-comment-id="{{ comment.id }}">
         Report
 </button>
 
@@ -621,30 +625,6 @@
                 }
             });
         }); 
-$('.report-button').each(function() {
-    var button = $(this);
-    var commentId = button.data('comment-id');
-    var reported = localStorage.getItem('reported_' + commentId); 
-
-    if (reported) {
-        button.text('Reported');
-        button.prop('disabled', true);
-    }
-
-    button.click(function() {
-        if (reported) {
-            return;
-        }
-
-        if (button.text().trim() === 'Report') {
-            button.text('Reported');
-            button.prop('disabled', true);
-            button.removeClass('btn-danger').addClass('btn-secondary');
-            localStorage.setItem('reported_' + commentId, 'true');
-        }
-    });
-});
-
 
 
     });

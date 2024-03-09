@@ -7,3 +7,8 @@ class categories(ListView):
     model=Category
     template_name= 'category/categories.html'
     context_object_name = 'categories'
+
+class category(ListView):
+    model=Category
+    template_name= 'base.html'
+    context_object_name = 'categories'

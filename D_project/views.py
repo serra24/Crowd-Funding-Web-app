@@ -224,3 +224,27 @@ def report_comment(request, comment_id):
     else:
         form = ReportForm()
     return render(request, 'D_project/reoprtcomment.html', {'form': form, 'reports': reports})
+    
+
+def report_project(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+
+    if request.method == 'POST':
+        form = ReportForm(request.POST)
+        if form.is_valid():
+            reason = form.cleaned_data['reason']
+            project_report = ReportProject.objects.create(
+                project=project,
+                user=request.user,
+                reason=reason
+            )
+            project.reported = True
+            project.save()
+            return render(request, 'D_project/succ_report.html')
+        else:
+            return JsonResponse({'errors': form.errors}, status=400)
+    else:
+        form = ReportForm()
+
+    return render(request, 'D_project/report_project.html', {'form': form, 'project': project})
+
