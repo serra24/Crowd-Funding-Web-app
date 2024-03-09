@@ -1,5 +1,33 @@
 {%extends 'base.html'%} 
 {% block content %}
+<style>
+  .slider {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+.slides {
+  display: flex;
+  list-style: none;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slides li {
+  width: 100%;
+  height: 100%;
+}
+
+.slides img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>
 <h2 class="text-danger text-center">{{msg}}</h2>
 <section
   class="ftco-section bg-light categorydetailfirstsec"
@@ -11,14 +39,37 @@
         <h3 style="padding: 20px 0px; font-size: 30px; font-weight: bold">
           {{ project.name }}
         </h3>
-        {% for image in project.image_set.all %}
+        
+        <div class="slide-container">
+        {% for image in project.image_set.all %}           
+          <span id="slider{{image.id}}"></span>
+          <!-- <span id="slider2"></span>
+          <span id="slider3"></span>
+          <span id="slider4"></span>
+          <span id="slider5"></span> -->
+          {%endfor%}
 
-        <img
+          <div class="image-container">
+
+        <div class="slider">
+          <ul class="slides">
+            {% for image in project.image_set.all %}           
+            <li><img src="{{ image.image.url }}" class="img-fluid"
+              style="margin-bottom: 20px; width: 100%; border-radius: 20px"></li>
+              {% endfor %}
+          </ul>
+      </div>
+          
+         
+
+            
+
+        <!-- <img
           src="{{ image.image.url }}"
           class="img-fluid"
           style="margin-bottom: 20px; width: 100%; border-radius: 20px"
-        />
-        {% endfor %}
+        /> -->
+        
 
         <div class="date-category">
           <span>{{ project.start }}</span>
@@ -391,12 +442,7 @@
              <a href="{% url 'donate' project.id %}?image_url={{ first_image.image.url }}" class="btn btn-warning mb-3" style="width:100%;padding: 10px;font-weight: bold;"><b>ADD DONATION</b></a>
             
             <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#shareModal" style="width:100%;margin-bottom:10px;padding: 10px;font-weight: bold;">Share</button>
-
-             
               <div style="padding:10px;border-bottom:1px solid #eee">
-
-
-
                <div class="row">
 
               <div class="col-md-2">
@@ -642,6 +688,7 @@ $('.report-button').each(function() {
 
     });
 </script>
+
 
 {% endblock %}
 

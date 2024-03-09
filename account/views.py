@@ -55,3 +55,29 @@ def profile_edit(request):
 def logout_view(request):
     logout(request)
     return redirect('home')    
+
+
+
+@login_required
+def delete_account_view(request):
+    if request.method == 'POST':
+        # Verify user credentials (e.g., password confirmation)
+        password = request.POST.get('password')
+        user = request.user
+
+        # Check if the entered password matches the user's password
+        if user.check_password(password):
+            # Delete the account
+            user.delete()
+
+            # Log out the user
+            logout(request)
+            return redirect('/')  # Redirect to the home page or a confirmation page
+        else:
+            # Password doesn't match, display an error message
+            error_message = "Incorrect password. Please try again."
+
+    else:
+        error_message = None
+
+    return render(request, 'registration/delete_account.html', {'error_message': error_message})

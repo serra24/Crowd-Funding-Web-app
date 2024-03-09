@@ -23,13 +23,14 @@ from .settings import *
 from home.views import *
 
 
-from account.views import signup,logout_view
+from account.views import signup,logout_view,delete_account_view
 urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('account.urls'),name='account'),
     path('signup',signup , name='signup'),
     path('logout',logout_view , name='logout'),
+    path('delete-account/', delete_account_view, name='delete_account'),
 
     path('', home,name='home'),
     path('search/',search.as_view(),name="search"),

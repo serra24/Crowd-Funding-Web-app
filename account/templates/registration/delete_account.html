@@ -1,0 +1,18 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Delete Account</h1>
+<p class="text-warning">Are you sure you want to delete your account? This action cannot be undone.</p>
+{% if error_message %}
+    <p class="text-danger">{{ error_message }}</p>
+{% endif %}
+<form method="post" action="{% url 'delete_account' %}">
+    {% csrf_token %}
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password">
+    <button type="submit" class="btn btn-danger">Confirm Delete</button>
+</form>
+
+{% endblock %}
