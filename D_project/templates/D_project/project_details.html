@@ -297,99 +297,7 @@
          
     </div>    
       
-    <div class="col-md-4" >
-
-      <div
-        class="right-sharesection"
-        style="
-          
-          box-shadow: 0px -2px 7px #605d5d;
-          padding: 30px;
-          background: #fff;
-          z-index: 1;
-        "
-      >
-        <progress
-          id="file"
-          value="{{ project.current_amount }}"
-          max="{{ project.target }}"
-          style="width: 100%"
-        ></progress>
-        
-        <p>
-          
-          <span style="font-weight: bold; font-size: 20px">USD {{ remain }} </span>
-          raised of &nbsp; USD {{ project.target }} goal
-          
-        </p>
-
-        <p>{{ donations.count }} Donations</p>
-
-        <a
-          href="{% url 'donate' project.id %}"
-          class="btn btn-warning"
-          style="
-            width: 100%;
-            margin-bottom: 10px;
-            padding: 10px;
-            font-weight: bold;
-          "
-          >Donate</a
-        >
-
-        <button
-          type="button"
-          class="btn btn-warning"
-          data-bs-toggle="moda"
-          data-bs-target="#shareModa"
-          style="
-            width: 100%;
-            margin-bottom: 10px;
-            padding: 10px;
-            font-weight: bold;
-          "
-        >
-          Share
-        </button>
-        {% for donation in donations %}
-        <div style="padding:10px;border-bottom:1px solid #eee">
-
-
-
-          <div class="row">
-
-         <div class="col-md-2">
-
-            {% if donation.user.profile.image.url %}
-          <img src="{{donation.user.profile.image.url}}" class="rightdonor_img" alt="">
-          {% else %}
-          <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="rightdonor_img">
-                       
-          {% endif %}
-        
-         </div>
-
-         <div class="col-md-10">
-
-           <h4 style="font-size: 17px;font-weight: bold;"></h4>
-
-           <p><i class="bi bi-cash"></i> USD {{donation.donation}} <span style="font-weight: bold; text-decoration: underline;">{{ donation.user.username }}</span> </p>
-          <p class="text-success">{{donation.created_at}}</p>
-          
-         </div>
-
-
-       </div>
-
-     </div>
-     {% endfor %}  
-        
-                              <div id="rateYo1" style="margin: 10px auto"></div>
-                              <div class="counter" style="float: left; font-weight: bold; margin-left: 10px; margin-top: 7px;"></div>
-                              <div style="clear: both"></div>
-                          </div>
-                          
-    </div>
+   
             
   </div>
     <div><h3>Similar Projects</h3></div>
@@ -433,7 +341,102 @@
  
 {% endif %}
           </div>
-   
+
+          <div class="col-md-4" >
+
+            <div
+              class="right-sharesection"
+              style="
+                
+                box-shadow: 0px -2px 7px #605d5d;
+                padding: 30px;
+                background: #fff;
+                z-index: 1;
+              "
+            >
+              <progress
+                id="file"
+                value="{{ project.current_amount }}"
+                max="{{ project.target }}"
+                style="width: 100%"
+              ></progress>
+              
+              <p>
+                
+                <span style="font-weight: bold; font-size: 20px">USD {{ remain }} </span>
+                raised of &nbsp; USD {{ project.target }} goal
+                
+              </p>
+      
+              <p>{{ donations.count }} Donations</p>
+      
+              <a
+                href="{% url 'donate' project.id %}"
+                class="btn btn-warning"
+                style="
+                  width: 100%;
+                  margin-bottom: 10px;
+                  padding: 10px;
+                  font-weight: bold;
+                "
+                >Donate</a
+              >
+      
+              <button
+                type="button"
+                class="btn btn-warning"
+                data-bs-toggle="moda"
+                data-bs-target="#shareModa"
+                style="
+                  width: 100%;
+                  margin-bottom: 10px;
+                  padding: 10px;
+                  font-weight: bold;
+                "
+              >
+                Share
+              </button>
+              {% for donation in donations %}
+              <div style="padding:10px;border-bottom:1px solid #eee">
+      
+      
+      
+                <div class="row">
+      
+               <div class="col-md-2">
+      
+                  {% if donation.user.profile.image.url %}
+                <img src="{{donation.user.profile.image.url}}" class="rightdonor_img" alt="">
+                {% else %}
+                <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="rightdonor_img">
+                             
+                {% endif %}
+              
+               </div>
+      
+               <div class="col-md-10">
+      
+                 <h4 style="font-size: 17px;font-weight: bold;"></h4>
+      
+                 <p><i class="bi bi-cash"></i> USD {{donation.donation}} <span style="font-weight: bold; text-decoration: underline;">{{ donation.user.username }}</span> </p>
+                <p class="text-success">{{donation.created_at}}</p>
+                
+               </div>
+      
+      
+             </div>
+      
+           </div>
+           {% endfor %}  
+              
+                                    <div id="rateYo1" style="margin: 10px auto"></div>
+                                    <div class="counter" style="float: left; font-weight: bold; margin-left: 10px; margin-top: 7px;"></div>
+                                    <div style="clear: both"></div>
+                                </div>
+                                
+          </div>
+    </div>
+  </div>
   <!--start Modal -->
   <div
   class="modal fade"
