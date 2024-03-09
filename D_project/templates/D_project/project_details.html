@@ -8,6 +8,9 @@
   <div class="container">
     <div class="row">
       <div class="col-md-8 textsec">
+      <!-- Inside your project's template -->
+
+
         <h3 style="padding: 20px 0px; font-size: 30px; font-weight: bold">
           {{ project.name }}
         </h3>
@@ -23,6 +26,7 @@
         <div class="date-category">
           <span>{{ project.start }}</span>
           <span class="btn btn-success" style="float: right; padding: 5px 20px">{{project.category}}</span>
+          <a href="{% url 'report_project' project.id %}" class="btn text-danger">Report Project</a>
         </div>
 
         <p>{{ project.description }}</p>

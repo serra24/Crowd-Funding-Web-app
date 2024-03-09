@@ -136,3 +136,4 @@ class ReportProject(models.Model):
     def __str__(self):
         return f"Report by {self.user.username} on Project {self.project.id}"
 
+

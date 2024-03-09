@@ -224,24 +224,26 @@ def report_comment(request, comment_id):
         form = ReportForm()
     return render(request, 'D_project/reoprtcomment.html', {'form': form, 'reports': reports})
     
-    
+
 def report_project(request, project_id):
-    project = get_object_or_404(Project, pk=project_id)
-    reports = ReportProject.objects.filter(project=project)
-    
+    project = get_object_or_404(Project, id=project_id)
+
     if request.method == 'POST':
-        form = ReportProjectForm(request.POST)
-        
+        form = ReportForm(request.POST)
         if form.is_valid():
             reason = form.cleaned_data['reason']
-            additional_comments = form.cleaned_data['additional_comments']
-            
-            report = ReportProject.objects.create(project=project, user=request.user, reason=reason, additional_comments=additional_comments)
+            project_report = ReportProject.objects.create(
+                project=project,
+                user=request.user,
+                reason=reason
+            )
             project.reported = True
-            project.report_reason = reason
             project.save()
             return render(request, 'D_project/succ_report.html')
+        else:
+            return JsonResponse({'errors': form.errors}, status=400)
     else:
-        form = ReportProjectForm()
-    
-    return render(request, 'D_project/report_project.html', {'form': form, 'reports': reports})
+        form = ReportForm()
+
+    return render(request, 'D_project/report_project.html', {'form': form, 'project': project})
+
