@@ -31,6 +31,6 @@ class ProfileForm(forms.ModelForm):
         fields = ['phone_number' , 'addres','image']
         widgets = {
             'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
-            'address': forms.TextInput(attrs={'class': 'form-control'}),
+            'addres': forms.TextInput(attrs={'class': 'form-control'}),
             'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
