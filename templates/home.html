@@ -223,27 +223,26 @@
     </div>
   </section>
   <!-- End Testimonials Section -->
-
-
+    
   <!-- ======= Testimonials Section ======= -->
 
-  <section id="testimonials" class="testimonials section-bg">
+  <section id="testimonial" class="testimonial section-bg">
     <div class="container">
       <div class="section-title" data-aos="fade-right">
         <p>Happening near you</p>
 
-        <h2>latest 5 projects</h2>
+        <h2>the top 5 projects</h2>
       </div>
 
       <div class="row">
         <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
           <div
-            class="testimonials-slider swiper"
+            class="testimonial-slider swiper"
             data-aos="fade-up"
             data-aos-delay="100"
           >
             <div class="swiper-wrapper">
-              {%for project,img in theLatest%}
+              {%for project,img in theTop%}
               <div class="swiper-slide">
                 <div class="testimonial-item">
                   <a
@@ -276,58 +275,54 @@
   <!-- End Testimonials Section -->
 
 
+    <!-- ======= Testimonials Section ======= -->
 
-
-
+    <section id="Featured" class="Featured section-bg">
+      <div class="container">
+        <div class="section-title" data-aos="fade-right">
+          <p>Happening near you</p>
   
-  <!-- ======= Testimonials Section ======= -->
-
-  <section id="testimonials" class="testimonials section-bg">
-    <div class="container">
-      <div class="section-title" data-aos="fade-right">
-        <p>Happening near you</p>
-
-        <h2>latest 5 projects</h2>
-      </div>
-
-      <div class="row">
-        <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
-          <div
-            class="testimonials-slider swiper"
-            data-aos="fade-up"
-            data-aos-delay="100"
-          >
-            <div class="swiper-wrapper">
-              {%for project,img in theLatest%}
-              <div class="swiper-slide">
-                <div class="testimonial-item">
-                  <a
-                    href="https://gofundmeclone.phpliveprojects.com/category/categorydetail/7"
-                  >
-                    <img
-                      src={{img}}
-                      class="testimonial-img img-fluid"
-                      alt=""
-                    />
-
-                    <h3>{{project.name}}</h3>
-
-                    <p></p>
-                    <p>{{project.description}}</p>
-
-                    <h3>USD {{project.target}} raised &nbsp; &nbsp; 93000000 Donations</h3>
-                  </a>
+          <h2>the Featured 5 projects</h2>
+        </div>
+  
+        <div class="row">
+          <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
+            <div
+              class="Featured-slider swiper"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
+              <div class="swiper-wrapper">
+                {%for project,img in theFeatured%}
+                <div class="swiper-slide">
+                  <div class="testimonial-item">
+                    <a
+                      href="https://gofundmeclone.phpliveprojects.com/category/categorydetail/7"
+                    >
+                      <img
+                        src={{img}}
+                        class="testimonial-img img-fluid"
+                        alt=""
+                      />
+  
+                      <h3>{{project.name}}</h3>
+  
+                      <p></p>
+                      <p>{{project.description}}</p>
+  
+                      <h3>USD {{project.target}} raised &nbsp; &nbsp; 93000000 Donations</h3>
+                    </a>
+                  </div>
                 </div>
+                <!-- End testimonial item -->
+                {% endfor %}
               </div>
-              <!-- End testimonial item -->
-              {% endfor %}
+              <!-- <div class="swiper-pagination"></div> -->
             </div>
-            <!-- <div class="swiper-pagination"></div> -->
           </div>
         </div>
       </div>
-    </div>
-  </section>
-  <!-- End Testimonials Section -->
-  {% endblock %}
+    </section>
+    <!-- End Testimonials Section -->
 </main>
+  {% endblock %}

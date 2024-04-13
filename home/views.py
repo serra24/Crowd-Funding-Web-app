@@ -4,13 +4,26 @@ from django.views import View
 # Create your views here.
 
 def home(req):
-    images=[]
+    theLatestimages=[]
+    theTopimages=[]
+    theFeaturedimages=[]
     for project in Project.GetLatestFiveProjects():
         print(project.tags)
-        images.append(Image.GetProjactImage(project))
-    print(images)
-    theLatest = zip(Project.GetLatestFiveProjects(), images)
-    context={'theLatest':theLatest}
+        theLatestimages.append(Image.GetProjactImage(project))
+    # print(images)
+        for project in Project.GetTopFiveProjects():
+            print(project.tags)
+            theTopimages.append(Image.GetProjactImage(project))
+    # print(images)
+        for project in Project.GetFeaturedFiveProjects():
+            print(project.tags)
+            theFeaturedimages.append(Image.GetProjactImage(project))
+    # print(images)
+    theLatest = zip(Project.GetLatestFiveProjects(), theLatestimages)
+    theTop=zip(Project.GetTopFiveProjects(), theTopimages)
+    theFeatured=zip(Project.GetFeaturedFiveProjects(), theFeaturedimages)
+    context={'theLatest':theLatest,'theTop':theTop,'theFeatured':theFeatured}
+
     return render(req,'home.html',context)
 
 
