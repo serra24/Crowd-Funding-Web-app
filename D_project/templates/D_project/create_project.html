@@ -1,4 +1,4 @@
-{%extends 'base.html'%}
+{% extends 'base.html' %}
 
 {% block content %}
 <div class="container">
@@ -14,7 +14,7 @@
                         {% endfor %}
                         {% for field in form %}
                         <div class="mb-3">
-                            {{ field.label_tag }}
+                            <label class="form-label">{{ field.label_tag }}</label>
                             {{ field }}
                             {% if field.help_text %}
                             <small class="form-text text-muted">{{ field.help_text }}</small>
@@ -24,7 +24,7 @@
                         {{ imageform.management_form }}
                         {% for form in imageform %}
                         <div class="mb-3">
-                            {{ form.label_tag }}
+                            <label class="form-label">{{ form.label_tag }}</label>
                             {{ form }}
                         </div>
                         {% endfor %}

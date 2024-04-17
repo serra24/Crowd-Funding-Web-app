@@ -1,10 +1,10 @@
 from django import forms
 
-from .models import Image, Project
+from .models import Image, Project, Tag, Category
 
 from django.forms.widgets import ClearableFileInput, CheckboxInput
 from django.utils.safestring import mark_safe
-
+from bootstrap_datepicker.widgets import DatePicker
 # class ClearableMultipleFileInput(ClearableFileInput):
 #     template_name = 'create_project.html'  # Specify the template for rendering the widget
 
@@ -39,6 +39,24 @@ from django.utils.safestring import mark_safe
 #         return mark_safe('\n'.join(output))
     
 class ProjectForm(forms.ModelForm):
+    name = forms.CharField(widget=forms.TextInput(attrs={
+        "class": "form-control",
+    }))
+    category = forms.ModelChoiceField(queryset=Category.objects.all(),widget=forms.Select(attrs={
+        "class": "form-control",
+    }))
+    target = forms.DecimalField(widget=forms.TextInput(attrs={
+        "class": "form-control",
+    }))
+    tags = forms.ModelChoiceField(queryset=Tag.objects.all(),widget=forms.Select(attrs={
+        "class": "form-control",
+    }))
+    description = forms.CharField(widget=forms.Textarea(attrs={
+        "class": "form-control",
+    }))
+    end = forms.DateField(widget=forms.DateInput(attrs={"class": "form-control","type":"date"}
+        
+    ))
     class Meta:
         model = Project
         fields = [
@@ -50,21 +68,14 @@ class ProjectForm(forms.ModelForm):
             "end",
         ]
 
-        widgets = {
-            "name": forms.TextInput(attrs={"class": "form-control"}),
-            "category": forms.Select(attrs={"class": "form-control"}),
-            "target": forms.NumberInput(attrs={"class": "form-control"}),
-            "tags": forms.Select(attrs={"class": "form-control"}),
-            "description": forms.Textarea(attrs={"class": "form-control", "rows": "4"}),
-            "end": forms.DateInput(attrs={"class": "form-control"}),
-        }
+       
 class ImageForm(forms.ModelForm):
     image = forms.FileField(widget = forms.TextInput(attrs={
             "name": "images",
             "type": "File",
             "class": "form-control",
             "multiple": "True",
-    }), label = "")
+    }), label = "Images")
 
     class Meta:
         model = Image

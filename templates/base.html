@@ -48,6 +48,8 @@
 
   <link href="https://gofundmeclone.phpliveprojects.com/public/frontend/assets/css/style.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <link href="../static/css/mainStyle.css" rel="stylesheet">
+ 
 <style>
 
   .dropdown-container {
@@ -201,7 +203,7 @@
 
           <!-- Uncomment below if you prefer to use an image logo -->
 
-           <a href="https://gofundmeclone.phpliveprojects.com/"><img src="https://gofundmeclone.phpliveprojects.com/public/files/site_logo/Untitled-2.png" alt="" class="img-fluid" style="max-height:55px"></a>
+           <a href="https://gofundmeclone.phpliveprojects.com/"><img src="data:image/png;base64,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" alt="" class="img-fluid" style="max-height:55px"></a>
 
         </div>
 
@@ -461,7 +463,7 @@ button.close.msgclose {
 
   <!-- Template Main JS File -->
 
-  <script src="https://gofundmeclone.phpliveprojects.com/public/frontend/assets/js/main.js"></script>
+  <script src="../static/js/main.js"></script>
 
 </body>
 

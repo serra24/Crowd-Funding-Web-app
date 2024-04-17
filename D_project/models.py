@@ -29,7 +29,7 @@ class Project(models.Model):
     average_rating = models.DecimalField(max_digits=3, decimal_places=2, default=0)
 
     def __str__(self):
-        return self.name
+        return str(self.is_featured)
 
     def update_average_rating(self):
         average_rating = Rating.objects.filter(project=self).aggregate(Avg('rating'))['rating__avg']
@@ -39,7 +39,15 @@ class Project(models.Model):
     def GetLatestFiveProjects(self):
         return self.objects.all()[:5]
         # return self.objects.filter(name__in=(self.objects.all()[:5]))
-        
+
+    @classmethod
+    def GetTopFiveProjects(self):
+        return self.objects.all().order_by('average_rating')[:5]
+    
+    @classmethod
+    def GetFeaturedFiveProjects(self):
+        return self.objects.filter(is_featured=True)
+    
     @classmethod
     def GetProjectsByName(self,name):
             return self.objects.filter(name__icontains=name)
@@ -72,6 +80,9 @@ class Donation(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE,default=1)    
+    @classmethod
+    def GetProjactDonations(self,projact):
+        return self.objects.filter(project=projact)
 
 
 
@@ -87,6 +98,8 @@ class Rating(models.Model):
 
     def __str__(self):
         return f"Rating for {self.project.name} by {self.user.username}"
+    
+        # return Project.objects.filter(id__in=self.objects.order_by('rating').project)[:5]
 
 class Comment(models.Model):
     project = models.ForeignKey(Project, related_name='comments', on_delete=models.CASCADE)

@@ -1,6 +1,8 @@
 {%extends 'base.html'%} 
 {% block content %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/@splidejs/splide@3.0.9/dist/css/splide.min.css">
+<script src="https://unpkg.com/@splidejs/splide@3.0.9/dist/js/splide.min.js"></script>
 <style>
   .slider {
   width: 100%;
@@ -64,6 +66,10 @@
   #star-rating-section {
     text-align: center;
   }
+  .splide__slide img {
+  width: 100%;
+  height: auto;
+}
 </style>
 <h2 class="text-danger text-center">{{msg}}</h2>
 <section
@@ -72,7 +78,7 @@
 >
   <div class="container">
     <div class="row">
-      <div class="col-md-8 textsec">
+      <div class="col-8 textsec ">
       <!-- Inside your project's template -->
 
 
@@ -90,16 +96,18 @@
           {%endfor%}
 
           <div class="image-container">
-
-        <div class="slider">
-          <ul class="slides">
-            {% for image in project.image_set.all %}           
-            <li><img src="{{ image.image.url }}" class="img-fluid"
-              style="margin-bottom: 20px; width: 100%; border-radius: 20px"></li>
-              {% endfor %}
-          </ul>
-      </div>
-      
+            <div id="image-slider" class="splide">
+              <div class="splide__track">
+                <ul class="splide__list">
+                  {% for image in project.image_set.all %}
+                  <li class="splide__slide">
+                    <img src="{{ image.image.url }}">
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+            
           <div class="row d-flex justify-content-center m-2" style="border: #dad5d5 solid 1px;">
             <div class="col" style="float: left;">Tags </div>
             {%for tag in tags%}
@@ -270,8 +278,15 @@
                         <li class=" mt-1">
                             <div class="comment d-flex">
                                 <div class="col-md-1">
-                                    <img class="rounded-circle img-thumbnail" src="{{ reply.user.profile.image.url }}"  style="width: 40px;height:40px;" />
-                                </div>
+                                  {% if reply.user.Profile.image %}
+                                    <img class="rounded-circle img-thumbnail" src="{{ reply.user.Profile.image.url }}"  style="width: 40px;height:40px;" />
+                                  {%else%}
+                                 
+                                     <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="beneficiary_img">
+
+                                    {%endif%}
+                                  </div>
+                                
                                 <div class="col-md-8 mx-3">
                                     <h6 class="comment-header mb-0">{{ reply.user|title }}</h6>
                                     <p class="comment-time"><small><small>{{ reply.created_at }}</small></small></p>
@@ -298,68 +313,19 @@
         <button type="button" id="submit-comment" class="btn btn-success m-2">Post Comment</button>
     </form>
 </div>
-
-
-
-
-
-
-            
-         
-    </div>    
-      
    
-            
+    </div>    
+          
   </div>
-    <div><h3>Similar Projects</h3></div>
-    
-          {% if similarProjects %}
-  {% for project in similarProjects %}
-
   
-  <div class="col-md-4">
-      <a href="{%url 'project_details' project.id%}">
-        <div class="singlesection">
-
-          {% with first_image=project.image_set.first %}
-       
-          <img src="{{ first_image.image.url }}" class="singlesection-img img-fluid" alt="{{first_image.id}}">
-      
-          {% endwith %}
-
-       <div class="row" style="padding:10px">
-
-          <div class="col-md-6">
-              <h3>{{project.name}}</h3>
-          </div>
-
-          <div class="col-md-6">
-              <h3 style="text-align: center;background: #009970;padding: 4px;color: #fff;border-radius: 10px;"> <span style="font-weight: bold;font-size:20px">{{project.category}} </span></h3>
-          </div>
-      </div>
-          
-          
-
-            <progress id="file" value="{{project.current_amount}}" max="{{project.target}}" style="width: 100%;"> </progress>
-           <h3> <span style="font-weight: bold;font-size:20px">USD {{project.current_amount}} </span> paid of &nbsp; USD {{project.target}}</h3>
-                
-          
-        </div> 
-    </a>
-
-         </div>
-         
-  {% endfor %}
- 
-{% endif %}
-          </div>
-
-          <div class="col-md-4" >
+        </div>
+          <div class="col-md-4 " >
 
             <div
               class="right-sharesection"
               style="
-                position: fixed;
+                position: sticky;
+                top: 80px; 
                 box-shadow: 0px -2px 7px #605d5d;
                 padding: 30px;
                 background: #fff;
@@ -417,8 +383,8 @@
       
                <div class="col-md-2">
       
-                  {% if donation.user.profile.image.url %}
-                <img src="{{donation.user.profile.image.url}}" class="rightdonor_img" alt="">
+                  {% if donation.user.Profile.image %}
+                <img src="{{donation.user.Profile.image.url}}" class="rightdonor_img" alt="">
                 {% else %}
                 <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="rightdonor_img">
                              
@@ -430,7 +396,7 @@
       
                  <h4 style="font-size: 17px;font-weight: bold;"></h4>
       
-                 <p><i class="bi bi-cash"></i> USD {{donation.donation}} <span style="font-weight: bold; text-decoration: underline;">{{ donation.user.username }}</span> </p>
+                 <p><i class="fas fa-money-bill"></i> USD {{donation.donation}} <span style="font-weight: bold; text-decoration: underline;">{{ donation.user.username }}</span> </p>
                 <p class="text-success">{{donation.created_at}}</p>
                 
                </div>
@@ -442,31 +408,76 @@
            {% endfor %}  
               
               <div  class="text-center" style="margin: 10px auto">  
-<div id="average-rating" class="text-center" style="margin: 10px auto">
-    Average Rating: {{ project.average_rating }}
-</div>
-<form id="rating-form" method="post" action="{% url 'add_rating' project.id %}">
-  {% csrf_token %}
-  <div id="star-rating-section">
-    <div class="star-rating">
-      <button class="star-btn" data-rating="1"><i class="fas fa-star"></i></button>
-      <button class="star-btn" data-rating="2"><i class="fas fa-star"></i></button>
-      <button class="star-btn" data-rating="3"><i class="fas fa-star"></i></button>
-      <button class="star-btn" data-rating="4"><i class="fas fa-star"></i></button>
-      <button class="star-btn" data-rating="5"><i class="fas fa-star"></i></button>
-    </div>
-    <input type="hidden" id="selected-rating-input" name="rating" value="">
-  </div>
-</form></div>
-                                    <div class="counter" style="float: left; font-weight: bold; margin-left: 10px; margin-top: 7px;"></div>
-                                    <div style="clear: both"></div>
-                                </div>
+                <div id="average-rating" class="text-center" style="margin: 10px auto">
+                    Average Rating: {{ project.average_rating }}
+                </div>
+                <form id="rating-form" method="post" action="{% url 'add_rating' project.id %}">
+                  {% csrf_token %}
+                  <div id="star-rating-section">
+                    <div class="star-rating">
+                      <button class="star-btn" data-rating="1"><i class="fas fa-star"></i></button>
+                      <button class="star-btn" data-rating="2"><i class="fas fa-star"></i></button>
+                      <button class="star-btn" data-rating="3"><i class="fas fa-star"></i></button>
+                      <button class="star-btn" data-rating="4"><i class="fas fa-star"></i></button>
+                      <button class="star-btn" data-rating="5"><i class="fas fa-star"></i></button>
+                    </div>
+                    <input type="hidden" id="selected-rating-input" name="rating" value="">
+                  </div>
+                </form>
+              </div>
+              <div class="counter" style="float: left; font-weight: bold; margin-left: 10px; margin-top: 7px;"></div>
+              <div style="clear: both"></div>
+            </div>
                                 
           </div>
+
+          <div class=" row justify-content-between" style="position: relative; z-index: 2;">
+            <div><h3>Similar Projects</h3></div>
+            
+          {% if similarProjects %}
+          {% for project in similarProjects %}
+        
+          
+          <div class="col-4 ">
+              <a href="{%url 'project_details' project.id%}">
+                <div class="singlesection">
+        
+                  {% with first_image=project.image_set.first %}
+               
+                  <img src="{{ first_image.image.url }}" class="singlesection-img img-fluid" alt="{{first_image.id}}">
+              
+                  {% endwith %}
+        
+               <div class="row" style="padding:10px">
+        
+                  <div class="col-md-6">
+                      <h3>{{project.name}}</h3>
+                  </div>
+        
+                  <div class="col-md-6">
+                      <h3 style="text-align: center;background: #009970;padding: 4px;color: #fff;border-radius: 10px;"> <span style="font-weight: bold;font-size:20px">{{project.category}} </span></h3>
+                  </div>
+              </div>
+                  
+                  
+        
+                    <progress id="file" value="{{project.current_amount}}" max="{{project.target}}" style="width: 100%;"> </progress>
+                   <h3> <span style="font-weight: bold;font-size:20px">USD {{project.current_amount}} </span> paid of &nbsp; USD {{project.target}}</h3>
+                        
+                  
+                </div> 
+            </a>
+        
+                 </div>
+                 
+          {% endfor %}
+         
+        {% endif %}
+                  </div>
     </div>
   </div>
   <!--start Modal -->
-  <div
+  <!-- <div
   class="modal fade"
   id="shareModal"
   tabindex="-1"
@@ -547,7 +558,7 @@
                 href="http://twitter.com/share?text=text&url=https://gofundmeclone.phpliveprojects.com//category/categorydetail/5&hashtags=#PHP"
                 class="twitter"
                 target="_blank"
-                ><i class="bx bxl-twitter"></i
+                ><i class="fas fab-twitter"></i
               ></a>
             </div>
 
@@ -600,7 +611,7 @@
         </div>
     </div>
     </div>
-  </div>
+  </div> -->
 <!-- end Modal -->
 
 </section>
@@ -778,7 +789,19 @@
 
     });
 </script>
-
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    new Splide('#image-slider', {
+      type: 'loop',
+      perPage: 1,
+      autoplay: true,
+      interval: 1000, // Set the interval time in milliseconds (e.g., 3000 for 3 seconds)
+      pauseOnHover: true,
+      arrows: false,
+      pagination: true,
+    }).mount();
+  });
+</script>
 
 {% endblock %}
 
