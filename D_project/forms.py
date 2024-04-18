@@ -4,7 +4,7 @@ from .models import Image, Project, Tag, Category
 
 from django.forms.widgets import ClearableFileInput, CheckboxInput
 from django.utils.safestring import mark_safe
-from bootstrap_datepicker.widgets import DatePicker
+# from bootstrap_datepicker.widgets import DatePicker
 # class ClearableMultipleFileInput(ClearableFileInput):
 #     template_name = 'create_project.html'  # Specify the template for rendering the widget
 

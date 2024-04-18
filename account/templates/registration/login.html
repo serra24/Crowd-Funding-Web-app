@@ -31,16 +31,28 @@
 
         <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100" style="padding:40px">
 
-      <p style="float:right;padding:6px" class="col">Don't have an account? <a href="/accounts/signup">Sign up</a></p>
+      <p style="padding:6px" class="col">Don't have an account? <a href="/accounts/signup">Sign up</a></p>
 
       {% if form.errors %}
-    <p class="text-danger">Your username and password didn't match. Please try again.</p>
+      <div class="alert alert-{{message.tags}} alert-dismissible fade show text-danger bg-light" role="alert">
+        Your username and password didn't match. Please try again.
+       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+     </div>
   {% endif %}
-  
+  {% if user.is_active != 'True' %}
+  <div class="alert alert-{{message.tags}} alert-dismissible fade show text-danger bg-light" role="alert">
+    Your account doesn't activated yet.
+   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+ </div>
+      {% endif %}
+
   {% if next %}
     {% if user.is_authenticated %}
-      <p class="text-danger">Your account doesn't have access to this page. To proceed,
-      please login with an account that has access.</p>
+    <div class="alert alert-{{message.tags}} alert-dismissible fade show text-danger bg-light" role="alert">
+       Your account doesn't have access to this page. To proceed,
+      please login with an account that has access
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     {% else %}
       <p>Please login to see this page.</p>
     {% endif %}

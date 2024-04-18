@@ -230,13 +230,13 @@
 			
             <li><a class="getstarted scrollto" href="{%url 'createProject'%}">Get Started</a></li>
            
-            {% if user.Profile %}
+            {% if user.profile %}
             
            <!-- START: Dropdown Container avatar version -->
 			<div class="dropdown-container">
 				<details class="dropdown right">
 					<summary class="avatar">
-            {% if user.profile.image %}
+            {% if user.Profile.image %}
             <img src="{{user.Profile.image.url}}" class="beneficiary_img" alt="{{project.user.username}}">
              {% else %}
             <img src="https://maventricksdemo.co.in/bidonn/public/css/images/noImage.jpg" class="beneficiary_img">
@@ -276,7 +276,7 @@
 			<!-- END: Dropdown Container -->
 
             {% else %}
-            <li><a class="nav-link scrollto" href="/accounts/login/">Login {{ user.username }}</a></li>
+            <li><a class="nav-link scrollto" href="/accounts/login/">Login</a></li>
             <li><a class="nav-link scrollto" href="/accounts/signup">Register</a></li>
             {% endif %}
           

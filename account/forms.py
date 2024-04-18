@@ -27,6 +27,11 @@ class SignupForm(UserCreationForm):
 
 
 class UserForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['username' ,'first_name','last_name']:
+            self.fields[fieldname].help_text = None
     class Meta:
         model = User
         fields = ['username' ,'first_name','last_name']

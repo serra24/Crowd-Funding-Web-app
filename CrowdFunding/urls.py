@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 from .settings import *
 
 from home.views import *
-
+from account.views import activate
 
 from account.views import signup,logout_view,delete_account_view
 urlpatterns = [
@@ -36,6 +36,7 @@ urlpatterns = [
     path('search/',search.as_view(),name="search"),
     path('project/', include('D_project.urls')),
     path('category/', include('category.urls')),
-
+    path('activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})',  
+        activate, name='activate'),  
 
 ]+ static(MEDIA_URL,document_root=MEDIA_ROOT)
